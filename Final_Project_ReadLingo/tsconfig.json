@@ -1,0 +1,43 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["src"],
+  "exclude": [
+    "src/components/landing/AIFeaturesSection.tsx",
+    "src/components/landing/CTASection.tsx",
+    "src/components/landing/CategoriesSection.tsx",
+    "src/components/landing/ContactPreviewSection.tsx",
+    "src/components/landing/FAQSection.tsx",
+    "src/components/landing/FeaturesSection.tsx",
+    "src/components/landing/HeroSection.tsx",
+    "src/components/landing/PricingSection.tsx",
+    "src/components/landing/StoryPreviewSection.tsx",
+    "src/components/landing/TestimonialsSection.tsx",
+    "src/components/layout/AuthLayout.tsx",
+    "src/components/layout/Navbar.tsx",
+    "src/components/stories/StoryCard.tsx",
+    "src/components/ui/LingoAssistant.tsx",
+    "src/pages/BookmarksPage.tsx",
+    "src/pages/FavoritesPage.tsx",
+    "src/pages/FlashcardsPage.tsx",
+    "src/pages/ReadingHistoryPage.tsx",
+    "src/pages/ReadingStatisticsPage.tsx",
+    "src/pages/RegisterPage.tsx",
+    "src/pages/UnknownWordsPage.tsx"
+  ]
+}

@@ -1,0 +1,44 @@
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Infrastructure\obj\Debug\net8.0\EnglishLearningPlatform.Infrastructure.csproj.AssemblyReference.cache
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Infrastructure\obj\Debug\net8.0\EnglishLearningPlatform.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Infrastructure\obj\Debug\net8.0\EnglishLearningPlatform.Infrastructure.AssemblyInfoInputs.cache
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Infrastructure\obj\Debug\net8.0\EnglishLearningPlatform.Infrastructure.AssemblyInfo.cs
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Infrastructure\obj\Debug\net8.0\EnglishLearningPlatform.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Infrastructure\bin\Debug\net8.0\EnglishLearningPlatform.Infrastructure.deps.json
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Infrastructure\bin\Debug\net8.0\EnglishLearningPlatform.Infrastructure.runtimeconfig.json
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Infrastructure\bin\Debug\net8.0\EnglishLearningPlatform.Infrastructure.dll
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Infrastructure\bin\Debug\net8.0\EnglishLearningPlatform.Infrastructure.pdb
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Infrastructure\bin\Debug\net8.0\EnglishLearningPlatform.Application.dll
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Infrastructure\bin\Debug\net8.0\EnglishLearningPlatform.Domain.dll
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Infrastructure\bin\Debug\net8.0\EnglishLearningPlatform.Persistence.dll
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Infrastructure\bin\Debug\net8.0\EnglishLearningPlatform.Application.pdb
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Infrastructure\bin\Debug\net8.0\EnglishLearningPlatform.Domain.pdb
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Infrastructure\bin\Debug\net8.0\EnglishLearningPlatform.Persistence.pdb
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Infrastructure\obj\Debug\net8.0\EnglishL.82E643E7.Up2Date
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Infrastructure\obj\Debug\net8.0\EnglishLearningPlatform.Infrastructure.dll
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Infrastructure\obj\Debug\net8.0\refint\EnglishLearningPlatform.Infrastructure.dll
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Infrastructure\obj\Debug\net8.0\EnglishLearningPlatform.Infrastructure.pdb
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Infrastructure\obj\Debug\net8.0\EnglishLearningPlatform.Infrastructure.genruntimeconfig.cache
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Infrastructure\obj\Debug\net8.0\ref\EnglishLearningPlatform.Infrastructure.dll
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Infrastructure\obj\Debug\net8.0\EnglishLearningPlatform.Infrastructure.sourcelink.json
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Infrastructure\bin\Debug\net8.0\EnglishLearningPlatform.Infrastructure.deps.json
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Infrastructure\bin\Debug\net8.0\EnglishLearningPlatform.Infrastructure.runtimeconfig.json
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Infrastructure\bin\Debug\net8.0\EnglishLearningPlatform.Infrastructure.dll
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Infrastructure\bin\Debug\net8.0\EnglishLearningPlatform.Infrastructure.pdb
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Infrastructure\bin\Debug\net8.0\EnglishLearningPlatform.Application.dll
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Infrastructure\bin\Debug\net8.0\EnglishLearningPlatform.Domain.dll
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Infrastructure\bin\Debug\net8.0\EnglishLearningPlatform.Persistence.dll
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Infrastructure\bin\Debug\net8.0\EnglishLearningPlatform.Application.pdb
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Infrastructure\bin\Debug\net8.0\EnglishLearningPlatform.Domain.pdb
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Infrastructure\bin\Debug\net8.0\EnglishLearningPlatform.Persistence.pdb
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Infrastructure\obj\Debug\net8.0\EnglishLearningPlatform.Infrastructure.csproj.AssemblyReference.cache
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Infrastructure\obj\Debug\net8.0\EnglishLearningPlatform.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Infrastructure\obj\Debug\net8.0\EnglishLearningPlatform.Infrastructure.AssemblyInfoInputs.cache
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Infrastructure\obj\Debug\net8.0\EnglishLearningPlatform.Infrastructure.AssemblyInfo.cs
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Infrastructure\obj\Debug\net8.0\EnglishLearningPlatform.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Infrastructure\obj\Debug\net8.0\EnglishLearningPlatform.Infrastructure.sourcelink.json
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Infrastructure\obj\Debug\net8.0\EnglishL.82E643E7.Up2Date
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Infrastructure\obj\Debug\net8.0\EnglishLearningPlatform.Infrastructure.dll
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Infrastructure\obj\Debug\net8.0\refint\EnglishLearningPlatform.Infrastructure.dll
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Infrastructure\obj\Debug\net8.0\EnglishLearningPlatform.Infrastructure.pdb
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Infrastructure\obj\Debug\net8.0\EnglishLearningPlatform.Infrastructure.genruntimeconfig.cache
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Infrastructure\obj\Debug\net8.0\ref\EnglishLearningPlatform.Infrastructure.dll

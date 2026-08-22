@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="EnglishLearningPlatform.API/EnglishLearningPlatform.API.csproj" />
+  <Project Path="EnglishLearningPlatform.Application/EnglishLearningPlatform.Application.csproj" />
+  <Project Path="EnglishLearningPlatform.Domain/EnglishLearningPlatform.Domain.csproj" />
+  <Project Path="EnglishLearningPlatform.Infrastructure/EnglishLearningPlatform.Infrastructure.csproj" />
+  <Project Path="EnglishLearningPlatform.Persistence/EnglishLearningPlatform.Persistence.csproj" />
+</Solution>

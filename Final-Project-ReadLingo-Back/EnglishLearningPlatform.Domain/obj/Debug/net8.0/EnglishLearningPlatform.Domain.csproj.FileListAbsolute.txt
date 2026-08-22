@@ -1,0 +1,30 @@
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Domain\bin\Debug\net8.0\EnglishLearningPlatform.Domain.deps.json
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Domain\bin\Debug\net8.0\EnglishLearningPlatform.Domain.runtimeconfig.json
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Domain\bin\Debug\net8.0\EnglishLearningPlatform.Domain.dll
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Domain\bin\Debug\net8.0\EnglishLearningPlatform.Domain.pdb
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Domain\obj\Debug\net8.0\EnglishLearningPlatform.Domain.csproj.AssemblyReference.cache
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Domain\obj\Debug\net8.0\EnglishLearningPlatform.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Domain\obj\Debug\net8.0\EnglishLearningPlatform.Domain.AssemblyInfoInputs.cache
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Domain\obj\Debug\net8.0\EnglishLearningPlatform.Domain.AssemblyInfo.cs
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Domain\obj\Debug\net8.0\EnglishLearningPlatform.Domain.csproj.CoreCompileInputs.cache
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Domain\obj\Debug\net8.0\EnglishLearningPlatform.Domain.dll
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Domain\obj\Debug\net8.0\refint\EnglishLearningPlatform.Domain.dll
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Domain\obj\Debug\net8.0\EnglishLearningPlatform.Domain.pdb
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Domain\obj\Debug\net8.0\EnglishLearningPlatform.Domain.genruntimeconfig.cache
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Domain\obj\Debug\net8.0\ref\EnglishLearningPlatform.Domain.dll
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Domain\obj\Debug\net8.0\EnglishLearningPlatform.Domain.sourcelink.json
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Domain\bin\Debug\net8.0\EnglishLearningPlatform.Domain.deps.json
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Domain\bin\Debug\net8.0\EnglishLearningPlatform.Domain.runtimeconfig.json
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Domain\bin\Debug\net8.0\EnglishLearningPlatform.Domain.dll
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Domain\bin\Debug\net8.0\EnglishLearningPlatform.Domain.pdb
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Domain\obj\Debug\net8.0\EnglishLearningPlatform.Domain.csproj.AssemblyReference.cache
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Domain\obj\Debug\net8.0\EnglishLearningPlatform.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Domain\obj\Debug\net8.0\EnglishLearningPlatform.Domain.AssemblyInfoInputs.cache
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Domain\obj\Debug\net8.0\EnglishLearningPlatform.Domain.AssemblyInfo.cs
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Domain\obj\Debug\net8.0\EnglishLearningPlatform.Domain.csproj.CoreCompileInputs.cache
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Domain\obj\Debug\net8.0\EnglishLearningPlatform.Domain.sourcelink.json
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Domain\obj\Debug\net8.0\EnglishLearningPlatform.Domain.dll
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Domain\obj\Debug\net8.0\refint\EnglishLearningPlatform.Domain.dll
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Domain\obj\Debug\net8.0\EnglishLearningPlatform.Domain.pdb
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Domain\obj\Debug\net8.0\EnglishLearningPlatform.Domain.genruntimeconfig.cache
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Domain\obj\Debug\net8.0\ref\EnglishLearningPlatform.Domain.dll

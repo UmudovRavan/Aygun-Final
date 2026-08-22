@@ -1,0 +1,40 @@
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Persistence\bin\Debug\net8.0\EnglishLearningPlatform.Persistence.deps.json
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Persistence\bin\Debug\net8.0\EnglishLearningPlatform.Persistence.runtimeconfig.json
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Persistence\bin\Debug\net8.0\EnglishLearningPlatform.Persistence.dll
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Persistence\bin\Debug\net8.0\EnglishLearningPlatform.Persistence.pdb
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Persistence\bin\Debug\net8.0\EnglishLearningPlatform.Application.dll
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Persistence\bin\Debug\net8.0\EnglishLearningPlatform.Domain.dll
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Persistence\bin\Debug\net8.0\EnglishLearningPlatform.Application.pdb
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Persistence\bin\Debug\net8.0\EnglishLearningPlatform.Domain.pdb
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Persistence\obj\Debug\net8.0\EnglishLearningPlatform.Persistence.csproj.AssemblyReference.cache
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Persistence\obj\Debug\net8.0\EnglishLearningPlatform.Persistence.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Persistence\obj\Debug\net8.0\EnglishLearningPlatform.Persistence.AssemblyInfoInputs.cache
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Persistence\obj\Debug\net8.0\EnglishLearningPlatform.Persistence.AssemblyInfo.cs
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Persistence\obj\Debug\net8.0\EnglishLearningPlatform.Persistence.csproj.CoreCompileInputs.cache
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Persistence\obj\Debug\net8.0\EnglishL.EF05E64D.Up2Date
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Persistence\obj\Debug\net8.0\EnglishLearningPlatform.Persistence.dll
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Persistence\obj\Debug\net8.0\refint\EnglishLearningPlatform.Persistence.dll
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Persistence\obj\Debug\net8.0\EnglishLearningPlatform.Persistence.pdb
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Persistence\obj\Debug\net8.0\EnglishLearningPlatform.Persistence.genruntimeconfig.cache
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Persistence\obj\Debug\net8.0\ref\EnglishLearningPlatform.Persistence.dll
+C:\Users\user\Desktop\Final Project\EnglishLearningPlatform\EnglishLearningPlatform.Persistence\obj\Debug\net8.0\EnglishLearningPlatform.Persistence.sourcelink.json
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Persistence\bin\Debug\net8.0\EnglishLearningPlatform.Persistence.deps.json
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Persistence\bin\Debug\net8.0\EnglishLearningPlatform.Persistence.runtimeconfig.json
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Persistence\bin\Debug\net8.0\EnglishLearningPlatform.Persistence.dll
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Persistence\bin\Debug\net8.0\EnglishLearningPlatform.Persistence.pdb
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Persistence\bin\Debug\net8.0\EnglishLearningPlatform.Application.dll
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Persistence\bin\Debug\net8.0\EnglishLearningPlatform.Domain.dll
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Persistence\bin\Debug\net8.0\EnglishLearningPlatform.Application.pdb
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Persistence\bin\Debug\net8.0\EnglishLearningPlatform.Domain.pdb
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Persistence\obj\Debug\net8.0\EnglishLearningPlatform.Persistence.csproj.AssemblyReference.cache
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Persistence\obj\Debug\net8.0\EnglishLearningPlatform.Persistence.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Persistence\obj\Debug\net8.0\EnglishLearningPlatform.Persistence.AssemblyInfoInputs.cache
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Persistence\obj\Debug\net8.0\EnglishLearningPlatform.Persistence.AssemblyInfo.cs
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Persistence\obj\Debug\net8.0\EnglishLearningPlatform.Persistence.csproj.CoreCompileInputs.cache
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Persistence\obj\Debug\net8.0\EnglishLearningPlatform.Persistence.sourcelink.json
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Persistence\obj\Debug\net8.0\EnglishL.EF05E64D.Up2Date
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Persistence\obj\Debug\net8.0\EnglishLearningPlatform.Persistence.dll
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Persistence\obj\Debug\net8.0\refint\EnglishLearningPlatform.Persistence.dll
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Persistence\obj\Debug\net8.0\EnglishLearningPlatform.Persistence.pdb
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Persistence\obj\Debug\net8.0\EnglishLearningPlatform.Persistence.genruntimeconfig.cache
+C:\Users\Ravan999\Desktop\Aygun-Final\Final-Project-ReadLingo-Back\EnglishLearningPlatform.Persistence\obj\Debug\net8.0\ref\EnglishLearningPlatform.Persistence.dll

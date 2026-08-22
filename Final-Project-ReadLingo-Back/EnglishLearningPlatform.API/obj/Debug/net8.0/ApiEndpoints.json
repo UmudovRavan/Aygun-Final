@@ -1,0 +1,1812 @@
+[
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.AdminController",
+    "Method": "GetDashboardStats",
+    "RelativePath": "api/v1/admin/dashboard",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.AdminController",
+    "Method": "GetAll",
+    "RelativePath": "api/v1/admin/users",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Role",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "IsActive",
+        "Type": "System.Nullable\u00601[[System.Boolean, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "PageNumber",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "PageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Search",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "SortBy",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Descending",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.AdminController",
+    "Method": "GetById",
+    "RelativePath": "api/v1/admin/users/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.AdminController",
+    "Method": "Delete",
+    "RelativePath": "api/v1/admin/users/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.AdminController",
+    "Method": "AssignRole",
+    "RelativePath": "api/v1/admin/users/{id}/roles",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "EnglishLearningPlatform.Application.DTOs.Admin.AssignRoleDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.AdminController",
+    "Method": "RemoveRole",
+    "RelativePath": "api/v1/admin/users/{id}/roles",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "EnglishLearningPlatform.Application.DTOs.Admin.AssignRoleDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.AdminController",
+    "Method": "UpdateStatus",
+    "RelativePath": "api/v1/admin/users/{id}/status",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "EnglishLearningPlatform.Application.DTOs.Admin.UpdateUserStatusDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.AiController",
+    "Method": "GenerateQuiz",
+    "RelativePath": "api/v1/ai/generate-quiz",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "EnglishLearningPlatform.Application.DTOs.AI.GenerateQuizForChapterDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.AiController",
+    "Method": "GenerateStandaloneQuiz",
+    "RelativePath": "api/v1/ai/generate-quiz-standalone",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "EnglishLearningPlatform.Application.DTOs.AI.GenerateStandaloneQuizRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.AiController",
+    "Method": "GenerateStory",
+    "RelativePath": "api/v1/ai/generate-story",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "EnglishLearningPlatform.Application.DTOs.AI.GenerateStoryRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.AuthController",
+    "Method": "ChangePassword",
+    "RelativePath": "api/v1/auth/change-password",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "EnglishLearningPlatform.Application.DTOs.Auth.ChangePasswordDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.AuthController",
+    "Method": "ConfirmEmail",
+    "RelativePath": "api/v1/auth/confirm-email",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "EnglishLearningPlatform.Application.DTOs.Auth.ConfirmEmailDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.AuthController",
+    "Method": "ForgotPassword",
+    "RelativePath": "api/v1/auth/forgot-password",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "EnglishLearningPlatform.Application.DTOs.Auth.ForgotPasswordDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.AuthController",
+    "Method": "Login",
+    "RelativePath": "api/v1/auth/login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "EnglishLearningPlatform.Application.DTOs.Auth.LoginDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.AuthController",
+    "Method": "Logout",
+    "RelativePath": "api/v1/auth/logout",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "EnglishLearningPlatform.Application.DTOs.Auth.RevokeTokenDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.AuthController",
+    "Method": "RefreshToken",
+    "RelativePath": "api/v1/auth/refresh-token",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "EnglishLearningPlatform.Application.DTOs.Auth.RefreshTokenRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.AuthController",
+    "Method": "Register",
+    "RelativePath": "api/v1/auth/register",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "EnglishLearningPlatform.Application.DTOs.Auth.RegisterDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.AuthController",
+    "Method": "ResendConfirmation",
+    "RelativePath": "api/v1/auth/resend-confirmation",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.AuthController",
+    "Method": "ResetPassword",
+    "RelativePath": "api/v1/auth/reset-password",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "EnglishLearningPlatform.Application.DTOs.Auth.ResetPasswordDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.BookmarksController",
+    "Method": "GetAll",
+    "RelativePath": "api/v1/bookmarks",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.BookmarksController",
+    "Method": "Create",
+    "RelativePath": "api/v1/bookmarks",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "EnglishLearningPlatform.Application.DTOs.Bookmark.CreateBookmarkDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.BookmarksController",
+    "Method": "GetById",
+    "RelativePath": "api/v1/bookmarks/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.BookmarksController",
+    "Method": "Update",
+    "RelativePath": "api/v1/bookmarks/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "EnglishLearningPlatform.Application.DTOs.Bookmark.UpdateBookmarkDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.BookmarksController",
+    "Method": "Delete",
+    "RelativePath": "api/v1/bookmarks/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.ChaptersController",
+    "Method": "GetByStory",
+    "RelativePath": "api/v1/chapters",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "storyId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.ChaptersController",
+    "Method": "Create",
+    "RelativePath": "api/v1/chapters",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "EnglishLearningPlatform.Application.DTOs.Chapter.CreateChapterDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.ChaptersController",
+    "Method": "GetById",
+    "RelativePath": "api/v1/chapters/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.ChaptersController",
+    "Method": "Update",
+    "RelativePath": "api/v1/chapters/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "EnglishLearningPlatform.Application.DTOs.Chapter.UpdateChapterDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.ChaptersController",
+    "Method": "Delete",
+    "RelativePath": "api/v1/chapters/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.ChaptersController",
+    "Method": "CompleteChapter",
+    "RelativePath": "api/v1/chapters/{id}/complete",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.ChaptersController",
+    "Method": "GetReadAloud",
+    "RelativePath": "api/v1/chapters/{id}/read-aloud",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "voiceId",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "languageCode",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.ChatController",
+    "Method": "GetConversations",
+    "RelativePath": "api/v1/chat/conversations",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.ChatController",
+    "Method": "GetMessages",
+    "RelativePath": "api/v1/chat/conversations/{conversationId}/messages",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "conversationId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "limit",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.ChatController",
+    "Method": "SendMessage",
+    "RelativePath": "api/v1/chat/messages",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "EnglishLearningPlatform.Application.DTOs.Chat.ChatRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.ChatController",
+    "Method": "GetUsage",
+    "RelativePath": "api/v1/chat/usage",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.FavoritesController",
+    "Method": "GetAll",
+    "RelativePath": "api/v1/favorites",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.FavoritesController",
+    "Method": "Add",
+    "RelativePath": "api/v1/favorites",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "EnglishLearningPlatform.Application.DTOs.Favorite.CreateFavoriteStoryDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.FavoritesController",
+    "Method": "Remove",
+    "RelativePath": "api/v1/favorites/{storyId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "storyId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.FilesController",
+    "Method": "Delete",
+    "RelativePath": "api/v1/files",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "fileUrl",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.FilesController",
+    "Method": "UploadAudio",
+    "RelativePath": "api/v1/files/audio",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "file",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      },
+      {
+        "Name": "container",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.FilesController",
+    "Method": "UploadImage",
+    "RelativePath": "api/v1/files/images",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "file",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      },
+      {
+        "Name": "container",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.LeaderboardController",
+    "Method": "GetLeaderboard",
+    "RelativePath": "api/v1/leaderboard",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "category",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.LeaderboardController",
+    "Method": "TogglePrivacy",
+    "RelativePath": "api/v1/leaderboard/privacy",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "isAnonymous",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.NotificationsController",
+    "Method": "GetAll",
+    "RelativePath": "api/v1/notifications",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.NotificationsController",
+    "Method": "Create",
+    "RelativePath": "api/v1/notifications",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "EnglishLearningPlatform.Application.DTOs.Notification.CreateNotificationDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.NotificationsController",
+    "Method": "Delete",
+    "RelativePath": "api/v1/notifications/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.NotificationsController",
+    "Method": "MarkAsRead",
+    "RelativePath": "api/v1/notifications/{id}/read",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.NotificationsController",
+    "Method": "MarkAllAsRead",
+    "RelativePath": "api/v1/notifications/read-all",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.NotificationsController",
+    "Method": "GetUnreadCount",
+    "RelativePath": "api/v1/notifications/unread-count",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.PaymentsController",
+    "Method": "CancelSubscription",
+    "RelativePath": "api/v1/payments/cancel",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.PaymentsController",
+    "Method": "CreateCheckoutSession",
+    "RelativePath": "api/v1/payments/checkout",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "EnglishLearningPlatform.Application.DTOs.Subscription.CreateCheckoutSessionRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.PaymentsController",
+    "Method": "GetCurrentSubscription",
+    "RelativePath": "api/v1/payments/current",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.PaymentsController",
+    "Method": "VerifySession",
+    "RelativePath": "api/v1/payments/verify",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "sessionId",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.PaymentsController",
+    "Method": "Webhook",
+    "RelativePath": "api/v1/payments/webhook",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.ProfileController",
+    "Method": "Get",
+    "RelativePath": "api/v1/profile",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.ProfileController",
+    "Method": "Update",
+    "RelativePath": "api/v1/profile",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "EnglishLearningPlatform.Application.DTOs.Profile.UpdateProfileDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.ProfileController",
+    "Method": "Delete",
+    "RelativePath": "api/v1/profile",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.ProgressController",
+    "Method": "GetAll",
+    "RelativePath": "api/v1/progress",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.ProgressController",
+    "Method": "Upsert",
+    "RelativePath": "api/v1/progress",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "EnglishLearningPlatform.Application.DTOs.Progress.UpsertUserProgressDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.ProgressController",
+    "Method": "GetReadingHistory",
+    "RelativePath": "api/v1/progress/reading-history",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.ProgressController",
+    "Method": "RecordReading",
+    "RelativePath": "api/v1/progress/reading-history",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "EnglishLearningPlatform.Application.DTOs.Progress.RecordReadingDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.ProgressController",
+    "Method": "GetStreak",
+    "RelativePath": "api/v1/progress/streak",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.QuizzesController",
+    "Method": "GetByChapter",
+    "RelativePath": "api/v1/quizzes",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "chapterId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.QuizzesController",
+    "Method": "Create",
+    "RelativePath": "api/v1/quizzes",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "EnglishLearningPlatform.Application.DTOs.Quiz.CreateQuizDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.QuizzesController",
+    "Method": "GetById",
+    "RelativePath": "api/v1/quizzes/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.QuizzesController",
+    "Method": "Update",
+    "RelativePath": "api/v1/quizzes/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "EnglishLearningPlatform.Application.DTOs.Quiz.UpdateQuizDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.QuizzesController",
+    "Method": "Delete",
+    "RelativePath": "api/v1/quizzes/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.QuizzesController",
+    "Method": "Submit",
+    "RelativePath": "api/v1/quizzes/{id}/submit",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "EnglishLearningPlatform.Application.DTOs.Quiz.QuizSubmissionDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.QuizzesController",
+    "Method": "SubmitAttempt",
+    "RelativePath": "api/v1/quizzes/attempts/{attemptId}/submit",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "attemptId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "EnglishLearningPlatform.Application.DTOs.Quiz.QuizSubmissionDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.QuizzesController",
+    "Method": "Generate",
+    "RelativePath": "api/v1/quizzes/generate",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "chapterId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.QuizzesController",
+    "Method": "GetHeartStatus",
+    "RelativePath": "api/v1/quizzes/heart-status",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.QuizzesController",
+    "Method": "RecordResult",
+    "RelativePath": "api/v1/quizzes/record-result",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "EnglishLearningPlatform.Application.DTOs.Quiz.RecordQuizResultDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.QuizzesController",
+    "Method": "GetByStory",
+    "RelativePath": "api/v1/quizzes/story/{storyId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "storyId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "chapterId",
+        "Type": "System.Nullable\u00601[[System.Guid, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.StoriesController",
+    "Method": "GetAll",
+    "RelativePath": "api/v1/stories",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "StoryCategoryId",
+        "Type": "System.Nullable\u00601[[System.Guid, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "StoryLevelId",
+        "Type": "System.Nullable\u00601[[System.Guid, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "IsPublished",
+        "Type": "System.Nullable\u00601[[System.Boolean, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Language",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "PageNumber",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "PageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Search",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "SortBy",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Descending",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.StoriesController",
+    "Method": "Create",
+    "RelativePath": "api/v1/stories",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "EnglishLearningPlatform.Application.DTOs.Story.CreateStoryDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.StoriesController",
+    "Method": "GetById",
+    "RelativePath": "api/v1/stories/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.StoriesController",
+    "Method": "Update",
+    "RelativePath": "api/v1/stories/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "EnglishLearningPlatform.Application.DTOs.Story.UpdateStoryDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.StoriesController",
+    "Method": "Delete",
+    "RelativePath": "api/v1/stories/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.StoriesController",
+    "Method": "Publish",
+    "RelativePath": "api/v1/stories/{id}/publish",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "publish",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.StoryCategoriesController",
+    "Method": "GetAll",
+    "RelativePath": "api/v1/story-categories",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "PageNumber",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "PageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Search",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "SortBy",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Descending",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.StoryCategoriesController",
+    "Method": "Create",
+    "RelativePath": "api/v1/story-categories",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "EnglishLearningPlatform.Application.DTOs.StoryCategory.CreateStoryCategoryDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.StoryCategoriesController",
+    "Method": "GetById",
+    "RelativePath": "api/v1/story-categories/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.StoryCategoriesController",
+    "Method": "Update",
+    "RelativePath": "api/v1/story-categories/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "EnglishLearningPlatform.Application.DTOs.StoryCategory.UpdateStoryCategoryDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.StoryCategoriesController",
+    "Method": "Delete",
+    "RelativePath": "api/v1/story-categories/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.StoryLevelsController",
+    "Method": "GetAll",
+    "RelativePath": "api/v1/story-levels",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "PageNumber",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "PageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Search",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "SortBy",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Descending",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.StoryLevelsController",
+    "Method": "Create",
+    "RelativePath": "api/v1/story-levels",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "EnglishLearningPlatform.Application.DTOs.StoryLevel.CreateStoryLevelDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.StoryLevelsController",
+    "Method": "GetById",
+    "RelativePath": "api/v1/story-levels/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.StoryLevelsController",
+    "Method": "Update",
+    "RelativePath": "api/v1/story-levels/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "EnglishLearningPlatform.Application.DTOs.StoryLevel.UpdateStoryLevelDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.StoryLevelsController",
+    "Method": "Delete",
+    "RelativePath": "api/v1/story-levels/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.SubscriptionsController",
+    "Method": "Subscribe",
+    "RelativePath": "api/v1/subscriptions",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "EnglishLearningPlatform.Application.DTOs.Subscription.CreateSubscriptionDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.SubscriptionsController",
+    "Method": "Cancel",
+    "RelativePath": "api/v1/subscriptions/{id}/cancel",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.SubscriptionsController",
+    "Method": "GetActive",
+    "RelativePath": "api/v1/subscriptions/active",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.SubscriptionsController",
+    "Method": "GetHistory",
+    "RelativePath": "api/v1/subscriptions/history",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.SupportTicketsController",
+    "Method": "GetAll",
+    "RelativePath": "api/v1/support-tickets",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "PageNumber",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "PageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Search",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "SortBy",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Descending",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.SupportTicketsController",
+    "Method": "Create",
+    "RelativePath": "api/v1/support-tickets",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "EnglishLearningPlatform.Application.DTOs.Support.CreateSupportTicketDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.SupportTicketsController",
+    "Method": "GetById",
+    "RelativePath": "api/v1/support-tickets/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.SupportTicketsController",
+    "Method": "Update",
+    "RelativePath": "api/v1/support-tickets/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "EnglishLearningPlatform.Application.DTOs.Support.UpdateSupportTicketDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.SupportTicketsController",
+    "Method": "Delete",
+    "RelativePath": "api/v1/support-tickets/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.SupportTicketsController",
+    "Method": "GetMine",
+    "RelativePath": "api/v1/support-tickets/mine",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.TranslationController",
+    "Method": "Translate",
+    "RelativePath": "api/v1/translations/translate",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "EnglishLearningPlatform.Application.DTOs.Translation.TranslateWordRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.VocabulariesController",
+    "Method": "GetAll",
+    "RelativePath": "api/v1/vocabularies",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "chapterId",
+        "Type": "System.Nullable\u00601[[System.Guid, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.VocabulariesController",
+    "Method": "Create",
+    "RelativePath": "api/v1/vocabularies",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "EnglishLearningPlatform.Application.DTOs.Vocabulary.CreateVocabularyDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.VocabulariesController",
+    "Method": "GetById",
+    "RelativePath": "api/v1/vocabularies/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.VocabulariesController",
+    "Method": "Update",
+    "RelativePath": "api/v1/vocabularies/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "EnglishLearningPlatform.Application.DTOs.Vocabulary.UpdateVocabularyDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.VocabulariesController",
+    "Method": "Delete",
+    "RelativePath": "api/v1/vocabularies/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.VocabulariesController",
+    "Method": "GetNextFlashcard",
+    "RelativePath": "api/v1/vocabularies/flashcard/next",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.VocabulariesController",
+    "Method": "RecordInteraction",
+    "RelativePath": "api/v1/vocabularies/interactions",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "EnglishLearningPlatform.Application.DTOs.Vocabulary.CreateWordInteractionDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]

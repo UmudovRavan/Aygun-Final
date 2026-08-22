@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { -webkit-font-smoothing: antialiased; }
+  body { @apply bg-white text-surface-900 font-sans; }
+  .dark body { @apply bg-ink-950 text-surface-100; }
+}
+
+@layer components {
+  .container-app { @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8; }
+  .card { @apply bg-white dark:bg-surface-900 rounded-2xl border border-surface-200 dark:border-surface-800 shadow-sm; }
+  .input { @apply w-full px-4 py-3 rounded-xl bg-surface-50 dark:bg-surface-800 border-2 border-surface-200 dark:border-surface-700 text-surface-900 dark:text-white outline-none focus:border-primary-500 transition-colors; }
+  .input::placeholder { color: #94a3b8; }
+  .dark .input::placeholder { color: #64748b; }
+  .badge { @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium; }
+  .glass { @apply bg-white/10 backdrop-blur-md border border-white/20; }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+  .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+}
