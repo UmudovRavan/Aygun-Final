@@ -1,4 +1,4 @@
-﻿using Asp.Versioning;
+using Asp.Versioning;
 using EnglishLearningPlatform.API.Extensions;
 using EnglishLearningPlatform.Application.DTOs.AI;
 using EnglishLearningPlatform.Application.Interfaces.Services;
@@ -12,7 +12,6 @@ namespace EnglishLearningPlatform.API.Controllers.V1
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/ai")]
     [Authorize]
-    [EnableRateLimiting("auth")] 
     public class AiController : ControllerBase
     {
         private readonly IAIStoryGeneratorService _storyGeneratorService;

@@ -2,14 +2,14 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard, Users, BookOpen, FolderTree, HelpCircle, Mail,
-  BarChart3, Sparkles, Settings, LogOut, Menu, X, Search,
-  DollarSign, Trash2, Plus, ArrowLeft, Eye, Edit
+  Sparkles, LogOut, Menu, X, Search,
+  DollarSign, Trash2, Plus, ArrowLeft, Eye, Edit, CheckCircle2, MessageSquare, Clock
 } from 'lucide-react';
 import Card from '../components/ui/Card';
 import Badge from '../components/ui/Badge';
 import Button from '../components/ui/Button';
 import { LoadingState } from '../components/ui/Loading';
-import { adminService, storyService, authService } from '../services';
+import { adminService, storyService, authService, contactService, type ContactMessage } from '../services';
 import { apiUploadFile, getMediaUrl } from '../services/api/client';
 import type { AdminStats, AdminUser, Story, Category } from '../types';
 
@@ -19,10 +19,7 @@ type TabKey =
   | 'stories'
   | 'categories'
   | 'quiz'
-  | 'messages'
-  | 'statistics'
-  | 'ai'
-  | 'settings';
+  | 'messages';
 
 const tabs: { key: TabKey; label: string; icon: typeof LayoutDashboard }[] = [
   { key: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -31,9 +28,6 @@ const tabs: { key: TabKey; label: string; icon: typeof LayoutDashboard }[] = [
   { key: 'categories', label: 'Categories', icon: FolderTree },
   { key: 'quiz', label: 'Quiz', icon: HelpCircle },
   { key: 'messages', label: 'Contact Messages', icon: Mail },
-  { key: 'statistics', label: 'Statistics', icon: BarChart3 },
-  { key: 'ai', label: 'AI Stories', icon: Sparkles },
-  { key: 'settings', label: 'Settings', icon: Settings },
 ];
 
 export default function AdminPage() {
@@ -43,10 +37,16 @@ export default function AdminPage() {
   const [stories, setStories] = useState<Story[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [levels, setLevels] = useState<any[]>([]);
+  const [messages, setMessages] = useState<ContactMessage[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<TabKey>('dashboard');
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [userSearch, setUserSearch] = useState('');
+  const [messageSearch, setMessageSearch] = useState('');
+  const [messageFilter, setMessageFilter] = useState<'all' | 'Open' | 'Resolved'>('all');
+  const [selectedMessage, setSelectedMessage] = useState<ContactMessage | null>(null);
+  const [replyText, setReplyText] = useState('');
+  const [savingStatus, setSavingStatus] = useState(false);
 
   // Modals & Form States
   const [showCreateStoryModal, setShowCreateStoryModal] = useState(false);
@@ -62,8 +62,6 @@ export default function AdminPage() {
 
   const [showCreateCatModal, setShowCreateCatModal] = useState(false);
   const [catForm, setCatForm] = useState({ name: '', description: '' });
-
-
 
   const handleCoverFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -83,18 +81,20 @@ export default function AdminPage() {
 
   const loadData = async () => {
     try {
-      const [s, u, st, cat, lvl] = await Promise.all([
+      const [s, u, st, cat, lvl, msg] = await Promise.all([
         adminService.getStats(),
         adminService.getUsers(),
         storyService.getStories(),
         storyService.getCategories(),
         storyService.getLevels(),
+        contactService.getMessages(),
       ]);
       setStats(s);
       setRecentUsers(u);
       setStories(st);
       setCategories(cat);
       setLevels(lvl);
+      setMessages(msg);
     } catch (e) {
       console.warn('Error loading admin data:', e);
     } finally {
@@ -179,11 +179,66 @@ export default function AdminPage() {
     }
   };
 
+  const handleToggleMessageStatus = async (msg: ContactMessage) => {
+    const nextStatus = msg.status === 'Resolved' ? 'Open' : 'Resolved';
+    try {
+      await contactService.updateStatus(msg.id, nextStatus);
+      setMessages((prev) => prev.map((m) => (m.id === msg.id ? { ...m, status: nextStatus } : m)));
+      if (selectedMessage?.id === msg.id) {
+        setSelectedMessage((prev) => prev ? { ...prev, status: nextStatus } : null);
+      }
+    } catch (err: any) {
+      alert(err?.message || 'Failed to update message status');
+    }
+  };
+
+  const handleDeleteMessage = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this message?')) return;
+    try {
+      await contactService.deleteMessage(id);
+      setMessages((prev) => prev.filter((m) => m.id !== id));
+      if (selectedMessage?.id === id) {
+        setSelectedMessage(null);
+      }
+    } catch (err: any) {
+      alert(err?.message || 'Failed to delete message');
+    }
+  };
+
+  const handleSendReply = async () => {
+    if (!selectedMessage) return;
+    setSavingStatus(true);
+    try {
+      await contactService.updateStatus(selectedMessage.id, 'Resolved', replyText);
+      setMessages((prev) => prev.map((m) => (m.id === selectedMessage.id ? { ...m, status: 'Resolved', adminResponse: replyText } : m)));
+      setSelectedMessage((prev) => prev ? { ...prev, status: 'Resolved', adminResponse: replyText } : null);
+      setReplyText('');
+    } catch (err: any) {
+      alert(err?.message || 'Failed to update response');
+    } finally {
+      setSavingStatus(false);
+    }
+  };
+
   const filteredUsers = recentUsers.filter(
     (u) =>
       u.name.toLowerCase().includes(userSearch.toLowerCase()) ||
       u.email.toLowerCase().includes(userSearch.toLowerCase())
   );
+
+  const filteredMessages = messages.filter((m) => {
+    const query = messageSearch.toLowerCase();
+    const matchesSearch =
+      m.name.toLowerCase().includes(query) ||
+      m.email.toLowerCase().includes(query) ||
+      m.subject.toLowerCase().includes(query) ||
+      m.message.toLowerCase().includes(query);
+    if (!matchesSearch) return false;
+    if (messageFilter === 'all') return true;
+    return m.status === messageFilter;
+  });
+
+  const openMessagesCount = messages.filter((m) => m.status === 'Open' || m.status === 'InProgress').length;
 
   const currentTabLabel = tabs.find((t) => t.key === activeTab)?.label || 'Dashboard';
 
@@ -210,6 +265,7 @@ export default function AdminPage() {
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.key;
+          const badgeCount = tab.key === 'messages' ? openMessagesCount : 0;
           return (
             <button
               key={tab.key}
@@ -217,14 +273,21 @@ export default function AdminPage() {
                 setActiveTab(tab.key);
                 setSidebarOpen(false);
               }}
-              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+              className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                 isActive
                   ? 'bg-primary-600 text-white'
                   : 'text-surface-300 hover:bg-surface-800 hover:text-white'
               }`}
             >
-              <Icon className="w-5 h-5" />
-              {tab.label}
+              <div className="flex items-center gap-3">
+                <Icon className="w-5 h-5" />
+                <span>{tab.label}</span>
+              </div>
+              {badgeCount > 0 && (
+                <span className="px-2 py-0.5 text-xs font-bold rounded-full bg-danger-500 text-white animate-pulse">
+                  {badgeCount}
+                </span>
+              )}
             </button>
           );
         })}
@@ -454,6 +517,169 @@ export default function AdminPage() {
     </div>
   );
 
+  const renderMessages = () => (
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h2 className="text-lg font-bold text-surface-900 dark:text-white">Contact Messages & Inquiries</h2>
+          <p className="text-surface-500 dark:text-surface-400 text-xs">Messages and support tickets submitted from the contact form</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <Button
+            size="sm"
+            variant={messageFilter === 'all' ? 'primary' : 'secondary'}
+            onClick={() => setMessageFilter('all')}
+          >
+            All ({messages.length})
+          </Button>
+          <Button
+            size="sm"
+            variant={messageFilter === 'Open' ? 'primary' : 'secondary'}
+            onClick={() => setMessageFilter('Open')}
+          >
+            Open ({openMessagesCount})
+          </Button>
+          <Button
+            size="sm"
+            variant={messageFilter === 'Resolved' ? 'primary' : 'secondary'}
+            onClick={() => setMessageFilter('Resolved')}
+          >
+            Resolved ({messages.filter((m) => m.status === 'Resolved').length})
+          </Button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <Card className="p-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-lg bg-primary-500/10 text-primary-500 flex items-center justify-center">
+              <Mail className="w-5 h-5" />
+            </div>
+            <div>
+              <p className="text-surface-400 text-xs">Total Inquiries</p>
+              <p className="text-xl font-bold text-surface-900 dark:text-white">{messages.length}</p>
+            </div>
+          </div>
+        </Card>
+        <Card className="p-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-lg bg-warning-500/10 text-warning-500 flex items-center justify-center">
+              <Clock className="w-5 h-5" />
+            </div>
+            <div>
+              <p className="text-surface-400 text-xs">Pending / Open</p>
+              <p className="text-xl font-bold text-surface-900 dark:text-white">{openMessagesCount}</p>
+            </div>
+          </div>
+        </Card>
+        <Card className="p-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-lg bg-success-500/10 text-success-500 flex items-center justify-center">
+              <CheckCircle2 className="w-5 h-5" />
+            </div>
+            <div>
+              <p className="text-surface-400 text-xs">Resolved</p>
+              <p className="text-xl font-bold text-surface-900 dark:text-white">
+                {messages.filter((m) => m.status === 'Resolved').length}
+              </p>
+            </div>
+          </div>
+        </Card>
+      </div>
+
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="relative max-w-md w-full">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-surface-400" />
+          <input
+            type="text"
+            value={messageSearch}
+            onChange={(e) => setMessageSearch(e.target.value)}
+            placeholder="Search by sender, email, subject, text..."
+            className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-surface-100 dark:bg-surface-800 text-surface-900 dark:text-white placeholder-surface-400 border border-surface-200 dark:border-surface-700 focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
+          />
+        </div>
+      </div>
+
+      <Card className="p-0 overflow-hidden">
+        {filteredMessages.length === 0 ? (
+          <div className="p-12 text-center text-surface-400">
+            <MessageSquare className="w-12 h-12 mx-auto mb-3 opacity-40" />
+            <p className="text-base font-semibold">No contact messages found</p>
+            <p className="text-xs text-surface-500 mt-1">When users fill out the contact form, messages will appear here in real time.</p>
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="text-left text-surface-500 dark:text-surface-400 border-b border-surface-200 dark:border-surface-700 bg-surface-50 dark:bg-surface-800/50">
+                  <th className="px-4 py-3 font-medium">Sender</th>
+                  <th className="px-4 py-3 font-medium">Subject</th>
+                  <th className="px-4 py-3 font-medium">Message Preview</th>
+                  <th className="px-4 py-3 font-medium">Date</th>
+                  <th className="px-4 py-3 font-medium">Status</th>
+                  <th className="px-4 py-3 font-medium text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredMessages.map((m) => (
+                  <tr
+                    key={m.id}
+                    onClick={() => setSelectedMessage(m)}
+                    className="border-b border-surface-100 dark:border-surface-800 hover:bg-surface-50 dark:hover:bg-surface-800/30 cursor-pointer transition-colors"
+                  >
+                    <td className="px-4 py-3">
+                      <div className="font-semibold text-surface-900 dark:text-white">{m.name}</div>
+                      <div className="text-xs text-surface-400">{m.email || 'No email'}</div>
+                    </td>
+                    <td className="px-4 py-3 font-medium text-surface-800 dark:text-surface-200 max-w-[180px] truncate">
+                      {m.subject}
+                    </td>
+                    <td className="px-4 py-3 text-surface-500 dark:text-surface-400 max-w-[280px] truncate">
+                      {m.message}
+                    </td>
+                    <td className="px-4 py-3 text-xs text-surface-400 whitespace-nowrap">
+                      {new Date(m.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                    </td>
+                    <td className="px-4 py-3">
+                      <Badge color={m.status === 'Resolved' ? 'success' : 'warning'}>
+                        {m.status === 'Resolved' ? 'Resolved' : 'Open'}
+                      </Badge>
+                    </td>
+                    <td className="px-4 py-3 text-right" onClick={(e) => e.stopPropagation()}>
+                      <div className="flex items-center justify-end gap-1">
+                        <button
+                          onClick={() => setSelectedMessage(m)}
+                          className="p-1.5 text-surface-400 hover:text-primary-500 transition-colors"
+                          title="View Details"
+                        >
+                          <Eye className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={() => handleToggleMessageStatus(m)}
+                          className={`p-1.5 transition-colors ${m.status === 'Resolved' ? 'text-success-500 hover:text-warning-500' : 'text-surface-400 hover:text-success-500'}`}
+                          title={m.status === 'Resolved' ? 'Mark as Open' : 'Mark as Resolved'}
+                        >
+                          <CheckCircle2 className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteMessage(m.id)}
+                          className="p-1.5 text-surface-400 hover:text-danger-500 transition-colors"
+                          title="Delete Message"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </Card>
+    </div>
+  );
+
   if (loading) {
     return (
       <div className="min-h-screen bg-surface-50 dark:bg-ink-900 flex items-center justify-center">
@@ -504,12 +730,95 @@ export default function AdminPage() {
           {activeTab === 'stories' && renderStories()}
           {activeTab === 'categories' && renderCategories()}
           {activeTab === 'quiz' && renderQuiz()}
-          {(activeTab !== 'dashboard' && activeTab !== 'users' && activeTab !== 'stories' && activeTab !== 'categories' && activeTab !== 'quiz') && (
-            <Card className="p-8 text-center text-surface-500">
-              <p>{currentTabLabel} section is dynamically connected to the backend API.</p>
-            </Card>
-          )}
+          {activeTab === 'messages' && renderMessages()}
         </main>
+
+        {/* Modal: View Message Details */}
+        {selectedMessage && (
+          <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+            <div className="bg-white dark:bg-surface-900 rounded-2xl p-6 max-w-lg w-full border border-surface-200 dark:border-surface-800 shadow-2xl space-y-4">
+              <div className="flex justify-between items-start">
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <Badge color={selectedMessage.status === 'Resolved' ? 'success' : 'warning'}>
+                      {selectedMessage.status === 'Resolved' ? 'Resolved' : 'Open'}
+                    </Badge>
+                    <span className="text-xs text-surface-400">
+                      {new Date(selectedMessage.createdAt).toLocaleString()}
+                    </span>
+                  </div>
+                  <h3 className="font-bold text-lg text-surface-900 dark:text-white">{selectedMessage.subject}</h3>
+                </div>
+                <button onClick={() => setSelectedMessage(null)}>
+                  <X size={20} className="text-surface-400 hover:text-surface-900 dark:hover:text-white" />
+                </button>
+              </div>
+
+              <div className="bg-surface-50 dark:bg-surface-800/60 p-4 rounded-xl space-y-2">
+                <div className="flex justify-between text-xs text-surface-500 dark:text-surface-400 border-b border-surface-200 dark:border-surface-700 pb-2">
+                  <span>From: <strong className="text-surface-900 dark:text-white">{selectedMessage.name}</strong></span>
+                  <span>Email: <a href={`mailto:${selectedMessage.email}`} className="text-primary-500 underline font-medium">{selectedMessage.email || 'N/A'}</a></span>
+                </div>
+                <div className="pt-2 text-sm text-surface-800 dark:text-surface-200 whitespace-pre-wrap leading-relaxed">
+                  {selectedMessage.message}
+                </div>
+              </div>
+
+              {selectedMessage.adminResponse && (
+                <div className="bg-primary-50/50 dark:bg-primary-950/30 border border-primary-200 dark:border-primary-800/40 p-3.5 rounded-xl text-xs">
+                  <span className="font-bold text-primary-600 dark:text-primary-400 block mb-1">Admin Response / Note:</span>
+                  <p className="text-surface-700 dark:text-surface-300">{selectedMessage.adminResponse}</p>
+                </div>
+              )}
+
+              <div className="space-y-2 pt-2 border-t border-surface-200 dark:border-surface-800">
+                <label className="block text-xs font-semibold text-surface-600 dark:text-surface-300">
+                  Update Admin Note / Resolution
+                </label>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={replyText}
+                    onChange={(e) => setReplyText(e.target.value)}
+                    placeholder="e.g. Replied via email on Aug 23..."
+                    className="input text-sm flex-1"
+                  />
+                  <Button
+                    size="sm"
+                    variant="primary"
+                    disabled={savingStatus || !replyText.trim()}
+                    onClick={handleSendReply}
+                  >
+                    Save Note
+                  </Button>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between pt-3 border-t border-surface-200 dark:border-surface-800">
+                <Button
+                  size="sm"
+                  variant="danger"
+                  onClick={() => handleDeleteMessage(selectedMessage.id)}
+                >
+                  <Trash2 size={14} className="mr-1" /> Delete
+                </Button>
+                <div className="flex items-center gap-2">
+                  <Button
+                    size="sm"
+                    variant={selectedMessage.status === 'Resolved' ? 'secondary' : 'primary'}
+                    onClick={() => handleToggleMessageStatus(selectedMessage)}
+                  >
+                    <CheckCircle2 size={14} className="mr-1" />
+                    {selectedMessage.status === 'Resolved' ? 'Reopen Inquiry' : 'Mark as Resolved'}
+                  </Button>
+                  <Button size="sm" variant="ghost" onClick={() => setSelectedMessage(null)}>
+                    Close
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Modal: Create Story */}
         {showCreateStoryModal && (

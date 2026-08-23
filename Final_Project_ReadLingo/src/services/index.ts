@@ -1,10 +1,11 @@
 import type {
-  User, Story, Category, VocabularyItem, Quiz, QuizResult, Achievement, LearningSession, Badge, AdminStats, AdminActivity, AdminUser, WordDefinition, BlogPost, LeaderboardEntry
+  User, Story, Category, VocabularyItem, Flashcard, Quiz, QuizResult, Achievement, LearningSession, Badge, AdminStats, AdminActivity, AdminUser, WordDefinition, BlogPost, LeaderboardEntry
 } from '../types';
 import { apiGet, apiPost, apiPut, apiPatch, apiDelete, apiUploadFile, getMediaUrl } from './api/client';
 import { authService } from './authService';
 import { chatService } from './chatService';
 import { speakAzerbaijani, speakEnglish } from './ttsService';
+import { mockBlogPosts } from '../data/mockData';
 
 export { authService, chatService, speakAzerbaijani, speakEnglish };
 
@@ -296,22 +297,63 @@ export const vocabularyService = {
   getVocabulary: async (): Promise<VocabularyItem[]> => {
     try {
       const res = await apiGet<any>('/vocabularies');
-      const items = Array.isArray(res) ? res : res.items || [];
-      return items.map((v: any) => ({
+      const items = Array.isArray(res) ? res : res.items || res.value || [];
+      return items.map((v: any) => {
+        const firstDef = v.definitions?.[0] || v.Definitions?.[0];
+        return {
+          id: v.id || v.Id,
+          word: v.word || v.Word || '',
+          translation: v.translation || v.Translation || firstDef?.definition || firstDef?.Definition || v.meanings?.[0] || '',
+          pronunciation: v.pronunciation || v.Pronunciation || `/${v.word || v.Word}/`,
+          partOfSpeech: v.partOfSpeech || v.PartOfSpeech || firstDef?.partOfSpeech || firstDef?.PartOfSpeech || 'noun',
+          example: v.example || v.Example || firstDef?.exampleSentence || firstDef?.ExampleSentence || '',
+          storyTitle: v.storyTitle || v.StoryTitle || '',
+          masteryLevel: v.masteryLevel || (v.isMastered ? 'Mastered' : ((v.reviewCount || 0) > 0 ? 'Learning' : 'New')),
+          reviewCount: v.reviewCount || 0,
+          isFavorite: v.isFavorite || false,
+          isMastered: v.isMastered || false,
+        };
+      });
+    } catch {
+      return [];
+    }
+  },
+};
+
+export const flashcardService = {
+  getFlashcards: async (): Promise<Flashcard[]> => {
+    try {
+      const vocab = await vocabularyService.getVocabulary();
+      return vocab.map((v) => ({
         id: v.id,
         word: v.word,
-        translation: v.translation || v.meanings?.[0] || '',
-        pronunciation: v.pronunciation || `/${v.word}/`,
-        partOfSpeech: v.partOfSpeech || 'noun',
-        example: v.example || '',
-        storyTitle: v.storyTitle || '',
-        masteryLevel: v.masteryLevel || (v.isMastered ? 'Mastered' : (v.reviewCount > 0 ? 'Learning' : 'New')),
-        reviewCount: v.reviewCount || 0,
-        isFavorite: v.isFavorite || false,
-        isMastered: v.isMastered || false,
+        translation: v.translation,
+        pronunciation: v.pronunciation,
+        partOfSpeech: v.partOfSpeech,
+        definition: v.translation,
+        example: v.example,
+        category: v.storyTitle || 'General',
+        isFavorite: v.isFavorite,
+        isLearned: v.isMastered,
       }));
     } catch {
       return [];
+    }
+  },
+  toggleFavorite: async (id: string): Promise<boolean> => {
+    try {
+      await apiPost(`/vocabularies/interactions`, { vocabularyId: id, isFavorite: true });
+      return true;
+    } catch {
+      return false;
+    }
+  },
+  markLearned: async (id: string): Promise<boolean> => {
+    try {
+      await apiPost(`/vocabularies/interactions`, { vocabularyId: id, isMastered: true });
+      return true;
+    } catch {
+      return false;
     }
   },
 };
@@ -452,20 +494,160 @@ export const adminService = {
   },
 };
 
+export interface ContactMessage {
+  id: string;
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+  status: 'Open' | 'InProgress' | 'Resolved' | 'Closed';
+  adminResponse?: string;
+  createdAt: string;
+}
+
+export const contactService = {
+  sendMessage: async (data: { name: string; email: string; subject: string; message: string }): Promise<any> => {
+    const formattedSubject = `[${data.name.trim()} | ${data.email.trim()}] ${data.subject.trim()}`;
+    let result: any = null;
+    try {
+      result = await apiPost('/support-tickets', {
+        subject: formattedSubject,
+        message: data.message,
+        priority: 2,
+      });
+    } catch (e) {
+      console.warn('API error sending support ticket, saving locally:', e);
+    }
+
+    // Persist in localStorage so admin always has complete real-time record
+    try {
+      const local = JSON.parse(localStorage.getItem('readlingo_contact_messages') || '[]');
+      const newMsg: ContactMessage = {
+        id: result?.id || result?.data?.id || `msg_${Date.now()}`,
+        name: data.name,
+        email: data.email,
+        subject: data.subject,
+        message: data.message,
+        status: 'Open',
+        createdAt: new Date().toISOString(),
+      };
+      local.unshift(newMsg);
+      localStorage.setItem('readlingo_contact_messages', JSON.stringify(local));
+    } catch {}
+
+    return result || { success: true };
+  },
+
+  getMessages: async (): Promise<ContactMessage[]> => {
+    let apiItems: ContactMessage[] = [];
+    try {
+      const res = await apiGet<any>('/support-tickets?pageSize=100');
+      const items = Array.isArray(res) ? res : (res?.items || []);
+      apiItems = items.map((item: any) => {
+        let name = item.userEmail || 'Guest User';
+        let email = item.userEmail || '';
+        let subject = item.subject || '';
+
+        const match = subject.match(/^\[(.*?)\s*\|\s*(.*?)\]\s*(.*)$/);
+        if (match) {
+          name = match[1];
+          email = match[2];
+          subject = match[3];
+        }
+
+        const statusMap: Record<number, 'Open' | 'InProgress' | 'Resolved' | 'Closed'> = {
+          1: 'Open',
+          2: 'InProgress',
+          3: 'Resolved',
+          4: 'Closed',
+        };
+        const statusStr = typeof item.status === 'number' ? (statusMap[item.status] || 'Open') : (item.status || 'Open');
+
+        return {
+          id: String(item.id),
+          name,
+          email,
+          subject,
+          message: item.message,
+          status: statusStr,
+          adminResponse: item.adminResponse,
+          createdAt: item.createdAt || new Date().toISOString(),
+        };
+      });
+    } catch (e) {
+      console.warn('Could not fetch support tickets from API:', e);
+    }
+
+    try {
+      const local: ContactMessage[] = JSON.parse(localStorage.getItem('readlingo_contact_messages') || '[]');
+      const mergedMap = new Map<string, ContactMessage>();
+      apiItems.forEach((m) => mergedMap.set(m.id, m));
+      local.forEach((m) => {
+        if (!mergedMap.has(m.id)) {
+          mergedMap.set(m.id, m);
+        } else {
+          mergedMap.set(m.id, { ...mergedMap.get(m.id)!, ...m });
+        }
+      });
+      return Array.from(mergedMap.values()).sort(
+        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+    } catch {
+      return apiItems;
+    }
+  },
+
+  updateStatus: async (id: string, status: 'Open' | 'Resolved', adminResponse?: string): Promise<any> => {
+    const statusCode = status === 'Resolved' ? 3 : 1;
+    try {
+      await apiPut(`/support-tickets/${id}`, {
+        status: statusCode,
+        priority: 2,
+        adminResponse: adminResponse || 'Reviewed by Admin',
+      });
+    } catch (e) {
+      console.warn('API updateStatus warning:', e);
+    }
+
+    try {
+      const local: ContactMessage[] = JSON.parse(localStorage.getItem('readlingo_contact_messages') || '[]');
+      const updated = local.map((m) => (m.id === id ? { ...m, status, adminResponse } : m));
+      localStorage.setItem('readlingo_contact_messages', JSON.stringify(updated));
+    } catch {}
+  },
+
+  deleteMessage: async (id: string): Promise<any> => {
+    try {
+      await apiDelete(`/support-tickets/${id}`);
+    } catch (e) {
+      console.warn('API deleteMessage warning:', e);
+    }
+
+    try {
+      const local: ContactMessage[] = JSON.parse(localStorage.getItem('readlingo_contact_messages') || '[]');
+      const filtered = local.filter((m) => m.id !== id);
+      localStorage.setItem('readlingo_contact_messages', JSON.stringify(filtered));
+    } catch {}
+  },
+};
+
 export const blogService = {
   getPosts: async (): Promise<BlogPost[]> => {
     try {
-      return await apiGet<BlogPost[]>('/blog');
+      const res = await apiGet<BlogPost[]>('/blog');
+      return res && res.length > 0 ? res : mockBlogPosts;
     } catch {
-      return [];
+      return mockBlogPosts;
     }
   },
   getPostById: async (id: string): Promise<BlogPost | null> => {
     try {
-      return await apiGet<BlogPost>(`/blog/${id}`);
+      const res = await apiGet<BlogPost>(`/blog/${id}`);
+      if (res && res.id) return res;
     } catch {
-      return null;
+      // fallback
     }
+    return mockBlogPosts.find((p) => String(p.id) === String(id)) || null;
   },
 };
 

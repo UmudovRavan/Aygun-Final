@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, RotateCcw, Volume2, BookOpen } from 'lucide-react';
 import Button from './Button';
-import { vocabularyService } from '../../services';
+import { vocabularyService, getWordDefinition } from '../../services';
 import type { VocabularyItem } from '../../types';
 
 const STORAGE_KEY = 'readlingo_flashcard_index';
@@ -24,6 +24,31 @@ export default function FlashcardPopup({ onClose }: { onClose: () => void }) {
     };
     load();
   }, []);
+
+  const card = items[currentIndex];
+
+  useEffect(() => {
+    if (!card) return;
+    if (!card.translation || card.translation.toLowerCase() === card.word.toLowerCase() || !card.example) {
+      getWordDefinition(card.word).then((def) => {
+        if (def && def.translation) {
+          setItems((prev) =>
+            prev.map((item, idx) =>
+              idx === currentIndex
+                ? {
+                    ...item,
+                    translation: def.translation || item.translation,
+                    pronunciation: (def.pronunciation && def.pronunciation !== `/${item.word}/`) ? def.pronunciation : item.pronunciation,
+                    partOfSpeech: def.partOfSpeech || item.partOfSpeech,
+                    example: def.example || item.example,
+                  }
+                : item
+            )
+          );
+        }
+      }).catch(() => {});
+    }
+  }, [currentIndex, card?.word]);
 
   const handleClose = useCallback(() => {
     // Advance to next word for next visit; wrap around to start
@@ -59,8 +84,6 @@ export default function FlashcardPopup({ onClose }: { onClose: () => void }) {
       </div>
     );
   }
-
-  const card = items[currentIndex];
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
@@ -116,7 +139,9 @@ export default function FlashcardPopup({ onClose }: { onClose: () => void }) {
                 ) : (
                   /* Back - translation, pronunciation, part of speech, example */
                   <div className="h-full flex flex-col items-center justify-center bg-gradient-to-br from-surface-50 to-surface-100 dark:from-surface-800 dark:to-surface-700 rounded-2xl border-2 border-surface-200 dark:border-surface-600 p-6 overflow-y-auto">
-                    <p className="font-display text-2xl font-bold text-primary-600 dark:text-primary-400 mb-2 text-center">{card.translation}</p>
+                    <p className="font-display text-2xl font-bold text-primary-600 dark:text-primary-400 mb-2 text-center">
+                      {card.translation || 'Tərcümə olunur...'}
+                    </p>
                     <div className="flex items-center gap-2 mb-3">
                       <button
                         onClick={(e) => { e.stopPropagation(); speak(card.word); }}
@@ -126,8 +151,16 @@ export default function FlashcardPopup({ onClose }: { onClose: () => void }) {
                       </button>
                       <span className="text-sm text-surface-500 dark:text-surface-400">{card.pronunciation}</span>
                     </div>
-                    <span className="badge bg-surface-100 dark:bg-surface-700 text-surface-600 dark:text-surface-300 mb-3">{card.partOfSpeech}</span>
-                    <p className="text-sm text-surface-600 dark:text-surface-300 italic text-center border-l-2 border-primary-300 pl-3">"{card.example}"</p>
+                    {card.partOfSpeech && (
+                      <span className="badge bg-surface-100 dark:bg-surface-700 text-surface-600 dark:text-surface-300 mb-3">
+                        {card.partOfSpeech}
+                      </span>
+                    )}
+                    {card.example ? (
+                      <p className="text-sm text-surface-600 dark:text-surface-300 italic text-center border-l-2 border-primary-300 pl-3">
+                        "{card.example}"
+                      </p>
+                    ) : null}
                   </div>
                 )}
               </motion.div>

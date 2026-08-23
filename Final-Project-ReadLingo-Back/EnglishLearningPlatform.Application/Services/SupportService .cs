@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using EnglishLearningPlatform.Application.DTOs.Common;
 using EnglishLearningPlatform.Application.DTOs.Support;
 using EnglishLearningPlatform.Application.Interfaces.Repositories;
@@ -69,6 +69,16 @@ namespace EnglishLearningPlatform.Application.Services
         public async Task<Result<SupportTicketDto>> CreateAsync(
             Guid userId, CreateSupportTicketDto dto, CancellationToken cancellationToken = default)
         {
+            if (userId == Guid.Empty)
+            {
+                var users = await _unitOfWork.Users.GetAllAsync(cancellationToken);
+                var defaultUser = users.FirstOrDefault();
+                if (defaultUser != null)
+                {
+                    userId = defaultUser.Id;
+                }
+            }
+
             var entity = _mapper.Map<SupportTicket>(dto);
             entity.AppUserId = userId;
             entity.Status = SupportTicketStatus.Open;

@@ -9,7 +9,21 @@ import { LoadingState } from '../components/ui/Loading';
 import { storyService } from '../services';
 import type { Story, Category } from '../types';
 
-const levels = ['All', 'A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+interface LevelFilter {
+  id: string;
+  label: string;
+  matches: string[];
+}
+
+const levels: LevelFilter[] = [
+  { id: 'All', label: 'All Levels', matches: ['all'] },
+  { id: 'Beginner', label: 'Beginner (A1)', matches: ['beginner', 'a1'] },
+  { id: 'Elementary', label: 'Elementary (A2)', matches: ['elementary', 'a2'] },
+  { id: 'Intermediate', label: 'Intermediate (B1)', matches: ['intermediate', 'b1'] },
+  { id: 'Upper Intermediate', label: 'Upper Int. (B2)', matches: ['upper intermediate', 'upper-intermediate', 'upper int.', 'b2'] },
+  { id: 'Advanced', label: 'Advanced (C1)', matches: ['advanced', 'c1'] },
+  { id: 'Proficient', label: 'Proficient (C2)', matches: ['proficient', 'c2'] },
+];
 
 export default function LibraryPage() {
   const [searchParams] = useSearchParams();
@@ -37,9 +51,19 @@ export default function LibraryPage() {
     load();
   }, []);
 
+  const matchesLevel = (storyDifficulty: string, selectedLevelId: string) => {
+    if (selectedLevelId === 'All') return true;
+    const diff = (storyDifficulty || '').trim().toLowerCase();
+    const target = levels.find((l) => l.id.toLowerCase() === selectedLevelId.toLowerCase());
+    if (target) {
+      return target.matches.includes(diff) || diff.includes(target.id.toLowerCase());
+    }
+    return diff === selectedLevelId.toLowerCase();
+  };
+
   const filtered = stories.filter((s) =>
     (search === '' || s.title.toLowerCase().includes(search.toLowerCase()) || s.description.toLowerCase().includes(search.toLowerCase())) &&
-    (level === 'All' || (s.difficulty || '').toLowerCase() === level.toLowerCase()) &&
+    matchesLevel(s.difficulty, level) &&
     (category === 'All' || (s.category || '').toLowerCase() === category.toLowerCase()) &&
     (!onlyBookmarked || s.isBookmarked)
   );
@@ -61,9 +85,19 @@ export default function LibraryPage() {
             <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-surface-400" />
             <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search stories..." className="input pl-12" />
           </div>
-          <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
+          <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide pb-1">
             {levels.map((lvl) => (
-              <button key={lvl} onClick={() => setLevel(lvl)} className={`px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all ${level === lvl ? 'bg-primary-600 text-white shadow-soft' : 'bg-white dark:bg-surface-800 text-surface-600 dark:text-surface-300 border border-surface-200 dark:border-surface-700 hover:bg-surface-50 dark:hover:bg-surface-700'}`}>{lvl}</button>
+              <button
+                key={lvl.id}
+                onClick={() => setLevel(lvl.id)}
+                className={`px-3.5 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-all ${
+                  level.toLowerCase() === lvl.id.toLowerCase()
+                    ? 'bg-primary-600 text-white shadow-soft font-semibold'
+                    : 'bg-white dark:bg-surface-800 text-surface-600 dark:text-surface-300 border border-surface-200 dark:border-surface-700 hover:bg-surface-50 dark:hover:bg-surface-700'
+                }`}
+              >
+                {lvl.label}
+              </button>
             ))}
           </div>
         </div>

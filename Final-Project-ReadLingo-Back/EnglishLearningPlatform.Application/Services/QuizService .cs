@@ -435,7 +435,7 @@ namespace EnglishLearningPlatform.Application.Services
 
             var prompt = $$"""
             You are an expert English language teacher and exam author.
-            Create 4 engaging, high-quality multiple-choice quiz questions based on the following story chapter for English learners.
+            Create 5 engaging, high-quality multiple-choice quiz questions based on the following story chapter for English learners.
 
             STORY TITLE: {{storyTitle}}
             CHAPTER TITLE: {{chapter.Title}}
@@ -445,7 +445,7 @@ namespace EnglishLearningPlatform.Application.Services
             \"\"\"
 
             REQUIREMENTS:
-            1. Generate 2 Reading Comprehension questions assessing understanding of the story events, character motivations, or key facts.
+            1. Generate 3 Reading Comprehension questions assessing understanding of the story events, character motivations, or key facts.
             2. Generate 2 Contextual Vocabulary questions testing words or expressions used in this chapter.
             3. Each question must have EXACTLY 4 distinct, plausible options (A, B, C, D).
             4. "correctAnswer" must match exactly one of the 4 strings in "options".
@@ -529,10 +529,25 @@ namespace EnglishLearningPlatform.Application.Services
                 }
             }
 
-            // Fallback if AI was unavailable
+            // Fallback if AI was unavailable or returned fewer questions
             if (questions.Count == 0)
             {
                 questions = GenerateFallbackQuestions(chapter);
+            }
+            else if (questions.Count > 5)
+            {
+                questions = questions.Take(5).ToList();
+            }
+            else if (questions.Count < 5)
+            {
+                var fallbacks = GenerateFallbackQuestions(chapter);
+                var order = questions.Count + 1;
+                foreach (var fb in fallbacks)
+                {
+                    if (questions.Count >= 5) break;
+                    fb.Order = order++;
+                    questions.Add(fb);
+                }
             }
 
             return questions;
@@ -543,26 +558,66 @@ namespace EnglishLearningPlatform.Application.Services
             var questions = new List<QuestionDto>();
             var random = Random.Shared;
 
-            questions.Add(new QuestionDto
+            var fallbackTemplates = new List<(string Question, string Correct, List<string> Distractors, string Explanation)>
             {
-                Id = Guid.NewGuid(),
-                Text = $"What is the main focus of '{chapter.Title}'?",
-                QuestionType = QuestionType.MultipleChoice,
-                Category = QuestionCategory.ReadingComprehension,
-                Order = 1,
-                TimeLimitSeconds = DefaultTimeLimitSeconds,
-                CorrectAnswer = $"The events in {chapter.Title}",
-                Explanation = "The chapter describes these key events.",
-                Answers = new List<string> { $"The events in {chapter.Title}", "An unrelated cookbook recipe", "A technical instruction manual", "A math test" }
+                (
+                    $"What is the primary theme or focus of '{chapter.Title}'?",
+                    $"The key events and character actions in {chapter.Title}",
+                    new List<string> { "A random cooking tutorial", "An unrelated technical manual", "An elementary mathematics exercise" },
+                    "The chapter centers on these storyline developments."
+                ),
+                (
+                    $"How does the narrative progress in '{chapter.Title}'?",
+                    "Through descriptive events and dialogues",
+                    new List<string> { "Without any character interaction", "Exclusively through numerical data", "By skipping all context" },
+                    "The story progresses through situational descriptions and actions."
+                ),
+                (
+                    $"What is the key takeaway from reading '{chapter.Title}'?",
+                    "Understanding the context and reinforcing vocabulary",
+                    new List<string> { "Memorizing irrelevant details", "Ignoring sentence structures", "Avoiding unfamiliar words" },
+                    "Reading helps learners comprehend context and build vocabulary."
+                ),
+                (
+                    $"Which aspect is most emphasized in '{chapter.Title}'?",
+                    "The development of the storyline and expressions used",
+                    new List<string> { "A totally unconnected historic event", "An abstract formula", "A separate unrelated narrative" },
+                    "The chapter highlights this particular narrative flow."
+                ),
+                (
+                    $"What is the best way to consolidate learning from '{chapter.Title}'?",
+                    "Reviewing new vocabulary and reflecting on chapter events",
+                    new List<string> { "Disregarding newly learned words", "Never practicing comprehension", "Skipping future chapters" },
+                    "Reviewing vocabulary and story points solidifies comprehension."
+                )
+            };
+
+            var order = 1;
+            foreach (var t in fallbackTemplates)
+            {
+                var options = new List<string>(t.Distractors) { t.Correct }
                     .OrderBy(_ => random.Next())
-                    .Select((opt, idx) => new AnswerDto
+                    .ToList();
+
+                questions.Add(new QuestionDto
+                {
+                    Id = Guid.NewGuid(),
+                    Text = t.Question,
+                    QuestionType = QuestionType.MultipleChoice,
+                    Category = QuestionCategory.ReadingComprehension,
+                    Order = order++,
+                    TimeLimitSeconds = DefaultTimeLimitSeconds,
+                    CorrectAnswer = t.Correct,
+                    Explanation = t.Explanation,
+                    Answers = options.Select((opt, idx) => new AnswerDto
                     {
                         Id = Guid.NewGuid(),
                         Text = opt,
                         Order = idx,
-                        IsCorrect = opt.StartsWith("The events in")
+                        IsCorrect = opt == t.Correct
                     }).ToList()
-            });
+                });
+            }
 
             return questions;
         }

@@ -1,4 +1,4 @@
-﻿using Asp.Versioning;
+using Asp.Versioning;
 using EnglishLearningPlatform.API.Extensions;
 using EnglishLearningPlatform.Application.DTOs.Common;
 using EnglishLearningPlatform.Application.DTOs.Support;
@@ -47,13 +47,15 @@ namespace EnglishLearningPlatform.API.Controllers.V1
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Create(CreateSupportTicketDto dto, CancellationToken cancellationToken)
         {
-            var result = await _service.CreateAsync(CurrentUserId, dto, cancellationToken);
+            var userId = User.GetUserId() ?? Guid.Empty;
+            var result = await _service.CreateAsync(userId, dto, cancellationToken);
             if (!result.IsSuccess)
                 return BadRequest(result);
 
-            return CreatedAtAction(nameof(GetById), new { id = result.Value!.Id, version = "1.0" }, result);
+            return Ok(result);
         }
 
         [HttpPut("{id:guid}")]

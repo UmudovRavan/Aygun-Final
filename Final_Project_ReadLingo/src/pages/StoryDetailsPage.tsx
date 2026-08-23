@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Clock, BookOpen, Bookmark, ListChecks } from 'lucide-react';
+import { ArrowLeft, BookOpen, Bookmark, ListChecks } from 'lucide-react';
 import AppLayout from '../components/layout/AppLayout';
 import Card from '../components/ui/Card';
 import Badge from '../components/ui/Badge';
@@ -10,8 +10,12 @@ import { LoadingState } from '../components/ui/Loading';
 import { storyService } from '../services';
 import type { Story } from '../types';
 
-const getDifficultyColor = (level: string): 'success' | 'warning' | 'danger' =>
-  level === 'A1' || level === 'A2' ? 'success' : level === 'B1' || level === 'B2' ? 'warning' : 'danger';
+const getDifficultyColor = (level: string): 'success' | 'warning' | 'danger' => {
+  const l = (level || '').toLowerCase();
+  if (l === 'a1' || l === 'a2' || l.includes('beg') || l.includes('elem')) return 'success';
+  if (l === 'b1' || l === 'b2' || l.includes('inter')) return 'warning';
+  return 'danger';
+};
 
 export default function StoryDetailsPage() {
   const { id } = useParams<{ id: string }>();
@@ -53,11 +57,7 @@ export default function StoryDetailsPage() {
             <div className="flex items-center gap-2 mb-3"><Badge color="primary">{story.category}</Badge><Badge color={getDifficultyColor(story.difficulty)}>{story.difficulty}</Badge></div>
             <h1 className="font-display text-3xl font-bold text-surface-900 dark:text-white mb-2">{story.title}</h1>
             <p className="text-surface-500 dark:text-surface-400 mb-4">by {story.author}</p>
-            <p className="text-surface-600 dark:text-surface-300 mb-4">{story.description}</p>
-            <div className="flex items-center gap-4 text-sm text-surface-400 mb-6">
-              <span className="flex items-center gap-1"><Clock size={14} /> {story.readingTimeMinutes} min</span>
-              <span className="flex items-center gap-1"><BookOpen size={14} /> {story.wordCount.toLocaleString()} words</span>
-            </div>
+            <p className="text-surface-600 dark:text-surface-300 mb-6">{story.description}</p>
             <div className="flex flex-col sm:flex-row gap-3">
               <Link to={`/read/${story.id}`}><Button variant="gradient" size="lg" rightIcon={<BookOpen size={18} />}>Start Reading</Button></Link>
               <Button

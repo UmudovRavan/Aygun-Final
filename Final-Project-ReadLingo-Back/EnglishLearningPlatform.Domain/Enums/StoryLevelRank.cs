@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +13,7 @@ namespace EnglishLearningPlatform.Domain.Enums
         Elementary = 2,
         Intermediate = 3,
         UpperIntermediate = 4,
-        Advanced = 5
+        Advanced = 5,
+        Proficient = 6
     }
 }

@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
-import { ArrowLeft, ArrowRight, Clock, BookOpen, Star, Volume2, CheckCircle2, Maximize2, Minimize2, Type, Sun, Moon, Languages, X, Play, Pause, RotateCcw, Heart, Zap, Target, Lock, HelpCircle, Sparkles, Loader2, Brain } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Clock, BookOpen, Volume2, CheckCircle2, Maximize2, Minimize2, Type, Sun, Moon, Languages, X, Play, Pause, RotateCcw, Heart, Zap, Target, Lock, HelpCircle, Sparkles, Loader2, Brain } from 'lucide-react';
 import AppLayout from '../components/layout/AppLayout';
 import Badge from '../components/ui/Badge';
 import Button from '../components/ui/Button';
@@ -311,7 +311,8 @@ export default function StoryReaderPage() {
     if (!q || !q.questions || q.questions.length === 0) {
       const textWords = (currentCh.title + ' ' + (currentCh.content || '')).replace(/[^\w\s]/g, '').split(/\s+/).filter((w) => w.length >= 3);
       const wordsPool = Array.from(new Set(textWords)).slice(0, 5);
-      const sampleWords = wordsPool.length >= 2 ? wordsPool : ['Beginning', 'Reading', 'Story', 'Learning'];
+      const defaultWords = ['Beginning', 'Reading', 'Story', 'Learning', 'Vocabulary'];
+      const sampleWords = [...wordsPool, ...defaultWords].filter((v, i, a) => a.indexOf(v) === i).slice(0, 5);
 
       const fallbackQuestions = sampleWords.map((word, i) => {
         const cleanWord = word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
@@ -963,12 +964,7 @@ export default function StoryReaderPage() {
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-3"><Badge color="primary">{story.category}</Badge><Badge color={getDifficultyColor(story.difficulty)}>{story.difficulty}</Badge></div>
               <h1 className="font-display text-2xl sm:text-3xl font-bold text-surface-900 dark:text-white mb-2">{story.title}</h1>
-              <p className="text-surface-500 dark:text-surface-400 mb-4">by {story.author}</p>
-              <div className="flex items-center gap-4 text-sm text-surface-400 mb-4">
-                <span className="flex items-center gap-1"><Clock size={14} /> {story.readingTimeMinutes} min</span>
-                <span className="flex items-center gap-1"><BookOpen size={14} /> {story.wordCount.toLocaleString()} words</span>
-                <span className="flex items-center gap-1"><Star size={14} className="fill-warning-400 text-warning-400" /> {story.rating}</span>
-              </div>
+              <p className="text-surface-500 dark:text-surface-400">by {story.author}</p>
             </div>
           </div>
         )}

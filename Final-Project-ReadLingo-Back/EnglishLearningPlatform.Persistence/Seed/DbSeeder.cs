@@ -91,15 +91,23 @@ namespace EnglishLearningPlatform.Persistence.Seed
 
         private static async Task SeedStoryLevelsAsync(ApplicationDbContext context)
         {
-            if (await context.StoryLevels.AnyAsync())
-                return;
+            var defaultLevels = new List<StoryLevel>
+            {
+                new StoryLevel { Name = "Beginner", Rank = StoryLevelRank.Beginner, Order = 1, Description = "New learners, simple vocabulary (A1)." },
+                new StoryLevel { Name = "Elementary", Rank = StoryLevelRank.Elementary, Order = 2, Description = "Basic sentence structures (A2)." },
+                new StoryLevel { Name = "Intermediate", Rank = StoryLevelRank.Intermediate, Order = 3, Description = "Everyday conversational language (B1)." },
+                new StoryLevel { Name = "Upper Intermediate", Rank = StoryLevelRank.UpperIntermediate, Order = 4, Description = "Complex grammar and idioms (B2)." },
+                new StoryLevel { Name = "Advanced", Rank = StoryLevelRank.Advanced, Order = 5, Description = "Near-native fluency material (C1)." },
+                new StoryLevel { Name = "Proficient", Rank = StoryLevelRank.Proficient, Order = 6, Description = "Mastery and native-level fluency material (C2)." },
+            };
 
-            context.StoryLevels.AddRange(
-                new StoryLevel { Name = "Beginner", Rank = StoryLevelRank.Beginner, Order = 1, Description = "New learners, simple vocabulary." },
-                new StoryLevel { Name = "Elementary", Rank = StoryLevelRank.Elementary, Order = 2, Description = "Basic sentence structures." },
-                new StoryLevel { Name = "Intermediate", Rank = StoryLevelRank.Intermediate, Order = 3, Description = "Everyday conversational language." },
-                new StoryLevel { Name = "Upper Intermediate", Rank = StoryLevelRank.UpperIntermediate, Order = 4, Description = "Complex grammar and idioms." },
-                new StoryLevel { Name = "Advanced", Rank = StoryLevelRank.Advanced, Order = 5, Description = "Near-native fluency material." });
+            foreach (var level in defaultLevels)
+            {
+                if (!await context.StoryLevels.AnyAsync(l => l.Name == level.Name || l.Rank == level.Rank))
+                {
+                    context.StoryLevels.Add(level);
+                }
+            }
 
             await context.SaveChangesAsync();
         }

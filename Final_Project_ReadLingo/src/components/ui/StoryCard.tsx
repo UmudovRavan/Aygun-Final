@@ -1,10 +1,20 @@
 import { Link } from 'react-router-dom';
-import { Clock, BookOpen, Star, Bookmark } from 'lucide-react';
+import { Bookmark } from 'lucide-react';
 import type { Story } from '../../types';
 import Badge from './Badge';
 
 const difficultyColors: Record<string, 'success' | 'warning' | 'danger'> = {
   A1: 'success', A2: 'success', B1: 'warning', B2: 'warning', C1: 'danger', C2: 'danger',
+  Beginner: 'success', Elementary: 'success', Intermediate: 'warning', 'Upper Intermediate': 'warning', Advanced: 'danger', Proficient: 'danger',
+};
+
+const getDifficultyColor = (diff?: string): 'success' | 'warning' | 'danger' => {
+  if (!diff) return 'success';
+  if (difficultyColors[diff]) return difficultyColors[diff];
+  const d = diff.toLowerCase();
+  if (d.includes('beg') || d.includes('elem') || d === 'a1' || d === 'a2') return 'success';
+  if (d.includes('inter') || d === 'b1' || d === 'b2') return 'warning';
+  return 'danger';
 };
 
 export default function StoryCard({ story }: { story: Story }) {
@@ -14,7 +24,7 @@ export default function StoryCard({ story }: { story: Story }) {
         <img src={story.coverImage} alt={story.title} loading="lazy" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
         <div className="absolute top-2 left-2 flex gap-1.5">
           <Badge color="primary">{story.category}</Badge>
-          <Badge color={difficultyColors[story.difficulty]}>{story.difficulty}</Badge>
+          <Badge color={getDifficultyColor(story.difficulty)}>{story.difficulty}</Badge>
         </div>
         {story.isBookmarked && (
           <div className="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/90 dark:bg-surface-900/90 flex items-center justify-center">
@@ -24,12 +34,7 @@ export default function StoryCard({ story }: { story: Story }) {
       </div>
       <div className="p-4 flex flex-col">
         <h3 className="font-display font-bold text-surface-900 dark:text-white text-sm mb-1 line-clamp-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">{story.title}</h3>
-        <p className="text-xs text-surface-400 mb-3 line-clamp-2">{story.description}</p>
-        <div className="mt-auto flex items-center gap-3 text-xs text-surface-400">
-          <span className="flex items-center gap-1"><Clock size={12} /> {story.readingTimeMinutes}m</span>
-          <span className="flex items-center gap-1"><BookOpen size={12} /> {story.wordCount}</span>
-          <span className="flex items-center gap-1"><Star size={12} className="fill-warning-400 text-warning-400" /> {story.rating}</span>
-        </div>
+        <p className="text-xs text-surface-400 line-clamp-2">{story.description}</p>
       </div>
     </Link>
   );

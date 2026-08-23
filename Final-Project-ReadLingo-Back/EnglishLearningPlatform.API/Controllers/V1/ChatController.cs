@@ -12,7 +12,6 @@ namespace EnglishLearningPlatform.API.Controllers.V1
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/chat")]
     [Authorize]
-    [EnableRateLimiting("auth")] 
     public class ChatController : ControllerBase
     {
         private readonly IChatService _chatService;

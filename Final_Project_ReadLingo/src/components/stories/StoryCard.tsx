@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Clock, BookMarked, Heart, BookOpen } from 'lucide-react';
+import { BookMarked } from 'lucide-react';
 import { motion } from 'framer-motion';
 import type { Story } from '../../types';
 
@@ -11,8 +11,11 @@ const difficultyStyles: Record<string, string> = {
   C1: 'bg-danger-100 text-danger-700 dark:bg-danger-900/40 dark:text-danger-300',
   C2: 'bg-danger-100 text-danger-700 dark:bg-danger-900/40 dark:text-danger-300',
   Beginner: 'bg-success-100 text-success-700 dark:bg-success-900/40 dark:text-success-300',
+  Elementary: 'bg-success-100 text-success-700 dark:bg-success-900/40 dark:text-success-300',
   Intermediate: 'bg-warning-100 text-warning-700 dark:bg-warning-900/40 dark:text-warning-300',
+  'Upper Intermediate': 'bg-warning-100 text-warning-700 dark:bg-warning-900/40 dark:text-warning-300',
   Advanced: 'bg-danger-100 text-danger-700 dark:bg-danger-900/40 dark:text-danger-300',
+  Proficient: 'bg-danger-100 text-danger-700 dark:bg-danger-900/40 dark:text-danger-300',
 };
 
 interface StoryCardProps {
@@ -65,17 +68,9 @@ export default function StoryCard({ story, onToggleBookmark, onToggleFavorite }:
             <h3 className="font-display font-bold text-lg text-surface-900 dark:text-white mb-2 line-clamp-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
               {story.title}
             </h3>
-            <p className="text-sm text-surface-500 dark:text-surface-400 line-clamp-2 mb-4">
+            <p className="text-sm text-surface-500 dark:text-surface-400 line-clamp-2">
               {story.description}
             </p>
-            <div className="flex items-center justify-between text-xs text-surface-400">
-              <span className="flex items-center gap-1.5">
-                <Clock className="w-3.5 h-3.5" /> {story.readingTimeMinutes} min
-              </span>
-              <span className="flex items-center gap-1.5">
-                <BookOpen className="w-3.5 h-3.5" /> {story.wordCount} words
-              </span>
-            </div>
           </div>
         </div>
       </Link>

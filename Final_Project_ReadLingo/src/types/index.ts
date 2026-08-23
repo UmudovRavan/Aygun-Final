@@ -52,6 +52,19 @@ export interface VocabularyItem {
   isFavorite: boolean; isMastered: boolean;
 }
 
+export interface Flashcard {
+  id: string;
+  word: string;
+  translation: string;
+  pronunciation: string;
+  partOfSpeech: string;
+  definition: string;
+  example: string;
+  category?: string;
+  isFavorite: boolean;
+  isLearned: boolean;
+}
+
 export interface Quiz { id: string; storyId: string; storyTitle: string; questions: QuizQuestion[]; }
 export interface QuizQuestion {
   id: string;
