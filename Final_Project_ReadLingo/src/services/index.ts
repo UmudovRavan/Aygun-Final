@@ -6,8 +6,10 @@ import { authService } from './authService';
 import { chatService } from './chatService';
 import { speakAzerbaijani, speakEnglish } from './ttsService';
 import { mockBlogPosts } from '../data/mockData';
+import { translateWordToAz, getDictionaryMetadata } from './translationHelper';
+import { calculateLevelFromXP } from '../utils/levelUtils';
 
-export { authService, chatService, speakAzerbaijani, speakEnglish };
+export { authService, chatService, speakAzerbaijani, speakEnglish, translateWordToAz, getDictionaryMetadata, calculateLevelFromXP };
 
 export const userService = {
   getProfile: async (): Promise<User> => {
@@ -26,6 +28,8 @@ export const userService = {
 
     const userName = profile.userName || profile.username || (profile.email ? profile.email.split('@')[0] : '');
     let fullName = userName || `${firstName} ${lastName}`.trim();
+    const totalXP = profile.totalXp || profile.totalXP || 0;
+    const levelInfo = calculateLevelFromXP(totalXP);
 
     return {
       id: profile.id || profile.userId || '',
@@ -35,9 +39,9 @@ export const userService = {
       name: fullName,
       email: profile.email || '',
       avatar: getMediaUrl(avatarPath),
-      level: profile.currentLevel || 1,
-      rank: profile.rank || 'Reader',
-      totalXP: profile.totalXp || profile.totalXP || 0,
+      level: levelInfo.level,
+      rank: levelInfo.rank,
+      totalXP,
       currentStreak: profile.daysStreak || profile.currentStreak || 0,
       longestStreak: profile.longestStreak || 0,
       hearts: typeof profile.hearts === 'number' ? profile.hearts : 5,
@@ -48,14 +52,15 @@ export const userService = {
       learningLevel: profile.learningLevel || 'A1',
       joinedAt: profile.createdAt || new Date().toISOString(),
       stats: {
-        currentLevel: profile.currentLevel || 1,
-        progressToNextLevel: profile.progressToNextLevel || 0,
-        nextLevelXP: 1000,
+        currentLevel: levelInfo.level,
+        progressToNextLevel: levelInfo.progressPercent,
+        nextLevelXP: levelInfo.nextLevelXP,
         storiesRead: profile.storiesCompleted || profile.storiesReadCount || 0,
         wordsLearned: profile.wordsLearnedCount || 0,
         quizzesCompleted: profile.quizzesCompletedCount || 0,
         averageAccuracy: profile.accuracyPercentage || profile.averageAccuracy || 0,
         totalReadingTime: profile.totalReadingTimeMinutes || 0,
+        todayReadingTime: profile.todayReadingMinutes ?? 0,
       },
       badges: profile.badges || [],
     };
@@ -314,13 +319,22 @@ export const vocabularyService = {
       const items = Array.isArray(res) ? res : res.items || res.value || [];
       return items.map((v: any) => {
         const firstDef = v.definitions?.[0] || v.Definitions?.[0];
+        const rawWord = (v.word || v.Word || '').trim();
+        const cleanWord = rawWord.toLowerCase().replace(/^[^\w]+|[^\w]+$/g, '');
+        const meta = getDictionaryMetadata(cleanWord);
+        const cachedTrans = localStorage.getItem(`readlingo_trans_${cleanWord}`);
+        const translation = v.translation || v.Translation || firstDef?.definitionAz || firstDef?.DefinitionAz || cachedTrans || meta?.translation || firstDef?.definition || firstDef?.Definition || v.meanings?.[0] || '';
+        const pronunciation = v.pronunciation || v.Pronunciation || meta?.pronunciation || `/${rawWord}/`;
+        const partOfSpeech = v.partOfSpeech || v.PartOfSpeech || meta?.partOfSpeech || firstDef?.partOfSpeech || firstDef?.PartOfSpeech || 'noun';
+        const example = v.example || v.Example || meta?.example || firstDef?.exampleSentence || firstDef?.ExampleSentence || '';
+
         return {
           id: v.id || v.Id,
-          word: v.word || v.Word || '',
-          translation: v.translation || v.Translation || firstDef?.definition || firstDef?.Definition || v.meanings?.[0] || '',
-          pronunciation: v.pronunciation || v.Pronunciation || `/${v.word || v.Word}/`,
-          partOfSpeech: v.partOfSpeech || v.PartOfSpeech || firstDef?.partOfSpeech || firstDef?.PartOfSpeech || 'noun',
-          example: v.example || v.Example || firstDef?.exampleSentence || firstDef?.ExampleSentence || '',
+          word: rawWord,
+          translation,
+          pronunciation,
+          partOfSpeech,
+          example,
           storyTitle: v.storyTitle || v.StoryTitle || '',
           masteryLevel: v.masteryLevel || (v.isMastered ? 'Mastered' : ((v.reviewCount || 0) > 0 ? 'Learning' : 'New')),
           reviewCount: v.reviewCount || 0,
@@ -394,6 +408,7 @@ export const quizService = {
               options: answers.map((a: any) => a.text),
               correctAnswer: correctAnswerText,
               explanation: q.explanation || '',
+              explanationAz: q.explanationAz || q.explanation_az || '',
               timeLimit: q.timeLimitSeconds || 15,
             };
           }),

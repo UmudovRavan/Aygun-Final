@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard, Users, BookOpen, FolderTree, HelpCircle, Mail,
   Sparkles, LogOut, Menu, X, Search,
-  DollarSign, Trash2, Plus, ArrowLeft, Eye, Edit, CheckCircle2, MessageSquare, Clock
+  Trash2, Plus, ArrowLeft, Eye, Edit, CheckCircle2, MessageSquare, Clock
 } from 'lucide-react';
 import Card from '../components/ui/Card';
 import Badge from '../components/ui/Badge';
@@ -245,8 +245,10 @@ export default function AdminPage() {
 
   const filteredUsers = recentUsers.filter(
     (u) =>
-      u.name.toLowerCase().includes(userSearch.toLowerCase()) ||
-      u.email.toLowerCase().includes(userSearch.toLowerCase())
+      u.role?.toLowerCase() !== 'admin' &&
+      u.email?.toLowerCase() !== 'admin@lingo.app' &&
+      (u.name.toLowerCase().includes(userSearch.toLowerCase()) ||
+      u.email.toLowerCase().includes(userSearch.toLowerCase()))
   );
 
   const filteredMessages = messages.filter((m) => {
@@ -269,7 +271,6 @@ export default function AdminPage() {
     { label: 'Total Users', value: stats?.totalUsers ?? 0, icon: Users, color: 'from-primary-500 to-primary-700', display: (stats?.totalUsers ?? 0).toLocaleString() },
     { label: 'Total Stories', value: stats?.totalStories ?? 0, icon: BookOpen, color: 'from-secondary-500 to-secondary-700', display: (stats?.totalStories ?? 0).toLocaleString() },
     { label: 'Premium Users', value: stats?.premiumUsers ?? 0, icon: Sparkles, color: 'from-success-500 to-success-700', display: (stats?.premiumUsers ?? 0).toLocaleString() },
-    { label: 'Revenue', value: stats?.revenue ?? 0, icon: DollarSign, color: 'from-warning-500 to-warning-700', display: `$${(stats?.revenue ?? 0).toLocaleString()}` },
   ];
 
   const renderSidebar = () => (
@@ -337,7 +338,7 @@ export default function AdminPage() {
 
   const renderDashboard = () => (
     <div className="space-y-6">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {statCards.map((card) => {
           const Icon = card.icon;
           return (
@@ -365,7 +366,7 @@ export default function AdminPage() {
               </tr>
             </thead>
             <tbody>
-              {recentUsers.map((u) => (
+              {recentUsers.filter((u) => u.role?.toLowerCase() !== 'admin' && u.email?.toLowerCase() !== 'admin@lingo.app').map((u) => (
                 <tr key={u.id} className="border-b border-surface-100 dark:border-surface-800">
                   <td className="py-3 font-medium text-surface-900 dark:text-white">{u.name}</td>
                   <td className="py-3 text-surface-500 dark:text-surface-400">{u.email}</td>

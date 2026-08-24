@@ -1,13 +1,17 @@
 import { useState, useEffect, useRef } from 'react';
-import { Award, Trophy, Star, Edit3, Mail, Calendar, Flame, Zap, BookOpen, Target, Sunrise, Moon, Compass, GraduationCap, Lock, Eye, EyeOff, Camera, Loader2, Trash2 } from 'lucide-react';
+import { Trophy, Star, Edit3, Mail, Calendar, Flame, Zap, BookOpen, Target, Lock, Eye, EyeOff, Camera, Loader2, Trash2, Clock, Globe, CheckCircle2 } from 'lucide-react';
+import { motion } from 'framer-motion';
 import AppLayout from '../components/layout/AppLayout';
 import Card from '../components/ui/Card';
 import Badge from '../components/ui/Badge';
 import Button from '../components/ui/Button';
 import { userService, authService } from '../services';
+import { calculateLevelFromXP } from '../utils/levelUtils';
 import type { User } from '../types';
 
-const badgeIcons: Record<string, typeof Star> = { Sunrise, Zap, BookOpen, Flame, Moon, Star, Compass, GraduationCap };
+const GOAL_OPTIONS = [5, 10, 15, 20, 30, 45, 60];
+const LEVEL_OPTIONS = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+const LANGUAGE_OPTIONS = ['Azerbaijani', 'English', 'Turkish', 'Russian', 'Spanish', 'German'];
 
 export default function ProfilePage() {
   const [user, setUser] = useState<User | null>(null);
@@ -21,23 +25,34 @@ export default function ProfilePage() {
   const [pwForm, setPwForm] = useState({ current: '', new: '', confirm: '' });
   const [pwChanged, setPwChanged] = useState(false);
   const [pwError, setPwError] = useState('');
+  const [savingSetting, setSavingSetting] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const loadProfile = async () => {
+    try {
+      const u = await userService.getProfile();
+      setUser(u);
+      setUserName(u.userName || u.name);
+      setFirstName(u.firstName || '');
+      setLastName(u.lastName || '');
+    } catch (e) {
+      console.warn('Error loading profile:', e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const loadProfile = async () => {
-      try {
-        const u = await userService.getProfile();
-        setUser(u);
-        setUserName(u.userName || u.name);
-        setFirstName(u.firstName || '');
-        setLastName(u.lastName || '');
-      } catch (e) {
-        console.warn('Error loading profile:', e);
-      } finally {
-        setLoading(false);
-      }
-    };
     loadProfile();
+
+    const handleProfileUpdate = () => {
+      loadProfile();
+    };
+
+    window.addEventListener('profile-updated', handleProfileUpdate);
+    return () => {
+      window.removeEventListener('profile-updated', handleProfileUpdate);
+    };
   }, []);
 
   const handleAvatarClick = () => {
@@ -96,6 +111,22 @@ export default function ProfilePage() {
     }
   };
 
+  const handleUpdateSetting = async (key: string, value: any) => {
+    if (!user) return;
+    setSavingSetting(key);
+    try {
+      const payload: any = {};
+      payload[key] = value;
+      const updated = await userService.updateProfile(payload);
+      setUser(updated);
+      window.dispatchEvent(new Event('profile-updated'));
+    } catch (e) {
+      console.error('Failed to update profile setting:', e);
+    } finally {
+      setSavingSetting(null);
+    }
+  };
+
   const handlePwSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setPwError('');
@@ -125,6 +156,8 @@ export default function ProfilePage() {
       </AppLayout>
     );
   }
+
+  const levelInfo = calculateLevelFromXP(user.totalXP);
 
   return (
     <AppLayout>
@@ -191,23 +224,24 @@ export default function ProfilePage() {
                   </div>
                 )}
                 <div className="flex flex-wrap items-center gap-2 mt-2">
-                  <Badge color="primary">Level {user.level}</Badge>
-                  <Badge color="warning">{user.rank}</Badge>
+                  <Badge color="primary">Level {levelInfo.level}</Badge>
+                  <Badge color="warning">{levelInfo.rank}</Badge>
                   <Badge color="success">{user.plan.toUpperCase()} Plan</Badge>
+                  <span className="text-xs text-surface-400 ml-1">CEFR: <strong className="text-surface-600 dark:text-surface-300">{user.learningLevel || 'A1'}</strong></span>
                 </div>
               </div>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {[
-                { label: 'Streak', value: user.currentStreak, suffix: 'days', icon: Flame },
-                { label: 'Total XP', value: user.totalXP.toLocaleString(), suffix: '', icon: Zap },
-                { label: 'Stories', value: user.stats.storiesRead, suffix: '', icon: BookOpen },
-                { label: 'Accuracy', value: user.stats.averageAccuracy, suffix: '%', icon: Target },
+                { label: 'Streak', value: user.currentStreak, suffix: 'days', icon: Flame, color: 'text-warning-500' },
+                { label: 'Total XP', value: user.totalXP.toLocaleString(), suffix: 'XP', icon: Zap, color: 'text-primary-500' },
+                { label: 'Stories Read', value: user.stats.storiesRead, suffix: '', icon: BookOpen, color: 'text-secondary-500' },
+                { label: 'Accuracy', value: `${user.stats.averageAccuracy}%`, suffix: '', icon: Target, color: 'text-success-500' },
               ].map((stat, i) => {
                 const Icon = stat.icon;
                 return (
-                  <div key={i} className="text-center p-3 rounded-xl bg-surface-50 dark:bg-surface-800/50">
-                    <Icon size={18} className="text-primary-500 mx-auto mb-1" />
+                  <div key={i} className="text-center p-3 rounded-xl bg-surface-50 dark:bg-surface-800/50 border border-surface-100 dark:border-surface-700/50">
+                    <Icon size={18} className={`${stat.color} mx-auto mb-1`} />
                     <p className="font-display font-bold text-lg text-surface-900 dark:text-white">{stat.value}<span className="text-xs text-surface-400 ml-1">{stat.suffix}</span></p>
                     <p className="text-xs text-surface-400">{stat.label}</p>
                   </div>
@@ -217,82 +251,151 @@ export default function ProfilePage() {
           </div>
         </Card>
 
-        <div className="grid lg:grid-cols-2 gap-6">
-          {/* Badges */}
-          <Card className="p-6">
-            <div className="flex items-center gap-2 mb-4">
-              <Award size={20} className="text-warning-500" />
-              <h2 className="font-display text-xl font-bold text-surface-900 dark:text-white">Badges</h2>
-            </div>
-            <div className="grid grid-cols-3 gap-4">
-              {user.badges.map((badge) => {
-                const Icon = badgeIcons[badge.icon] || Star;
-                return (
-                  <div key={badge.id} className="text-center p-4 rounded-xl bg-surface-50 dark:bg-surface-800/50 border border-surface-100 dark:border-surface-700 hover:shadow-md transition-shadow">
-                    <div className={`w-12 h-12 rounded-full bg-primary-100 dark:bg-primary-500/20 flex items-center justify-center mx-auto mb-2`}>
-                      <Icon size={22} className="text-primary-600 dark:text-primary-400" />
-                    </div>
-                    <p className="text-xs font-medium text-surface-900 dark:text-white">{badge.name}</p>
-                  </div>
-                );
-              })}
-            </div>
-          </Card>
-
-          {/* Level Progress */}
-          <Card className="p-6">
-            <div className="flex items-center gap-2 mb-4">
+        {/* Level Progress */}
+        <Card className="p-6 mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
               <Trophy size={20} className="text-primary-500" />
               <h2 className="font-display text-xl font-bold text-surface-900 dark:text-white">Level Progress</h2>
             </div>
-            <div className="space-y-4">
-              <div>
-                <div className="flex items-center justify-between text-sm mb-2">
-                  <span className="text-surface-600 dark:text-surface-300">Level {user.level} — {user.rank}</span>
-                  <span className="text-surface-400">{user.stats.progressToNextLevel}%</span>
-                </div>
-                <div className="w-full h-3 bg-surface-100 dark:bg-surface-700 rounded-full overflow-hidden">
-                  <div className="h-full bg-primary-500 rounded-full transition-all duration-500" style={{ width: `${user.stats.progressToNextLevel}%` }} />
-                </div>
-              </div>
-              <div className="flex items-center gap-2 text-sm text-surface-400">
-                <Star size={14} className="text-warning-400 fill-warning-400" />
-                {user.stats.nextLevelXP - user.totalXP} XP to next level
-              </div>
-            </div>
-          </Card>
-        </div>
+            <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-primary-50 dark:bg-primary-500/10 text-primary-600 dark:text-primary-400">
+              Level {levelInfo.level}
+            </span>
+          </div>
 
-        {/* Account Info */}
+          <div className="space-y-4">
+            <div>
+              <div className="flex items-center justify-between text-sm mb-2">
+                <span className="text-surface-600 dark:text-surface-300 font-medium">Level {levelInfo.level} ({levelInfo.rank})</span>
+                <span className="text-surface-900 dark:text-white font-bold">{levelInfo.progressPercent}%</span>
+              </div>
+              <div className="w-full h-3.5 bg-surface-100 dark:bg-surface-700 rounded-full overflow-hidden p-0.5">
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: `${levelInfo.progressPercent}%` }}
+                  transition={{ duration: 0.6, ease: 'easeOut' }}
+                  className="h-full bg-gradient-to-r from-primary-500 to-primary-600 rounded-full shadow-sm"
+                />
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between text-xs text-surface-500 dark:text-surface-400 pt-1">
+              <div className="flex items-center gap-1.5">
+                <Zap size={14} className="text-primary-500" />
+                <span>{user.totalXP.toLocaleString()} XP earned</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <Star size={14} className="text-warning-500 fill-warning-500" />
+                <span className="font-semibold text-surface-700 dark:text-surface-300">{levelInfo.xpToNextLevel.toLocaleString()} XP</span> to Level {levelInfo.level + 1}
+              </div>
+            </div>
+          </div>
+        </Card>
+
+        {/* Account Info & Preferences */}
         <Card className="p-6 mt-6">
-          <h2 className="font-display text-xl font-bold text-surface-900 dark:text-white mb-4">Account Info</h2>
-          <div className="grid sm:grid-cols-2 gap-4">
-            <div className="flex items-center gap-3">
-              <Mail size={16} className="text-surface-400" />
-              <div>
-                <p className="text-xs text-surface-400">Email</p>
-                <p className="text-sm font-medium text-surface-900 dark:text-white">{user.email}</p>
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="font-display text-xl font-bold text-surface-900 dark:text-white">Account Settings & Preferences</h2>
+            {savingSetting && <span className="text-xs text-primary-600 dark:text-primary-400 flex items-center gap-1"><Loader2 size={13} className="animate-spin" /> Saving changes...</span>}
+          </div>
+
+          <div className="grid sm:grid-cols-2 gap-6">
+            {/* Email */}
+            <div className="flex items-start gap-3 p-3.5 rounded-xl bg-surface-50 dark:bg-surface-800/40 border border-surface-100 dark:border-surface-800">
+              <Mail size={18} className="text-primary-500 mt-0.5 shrink-0" />
+              <div className="min-w-0 flex-1">
+                <p className="text-xs text-surface-400 font-medium">Email Address</p>
+                <p className="text-sm font-semibold text-surface-900 dark:text-white truncate">{user.email}</p>
               </div>
             </div>
-            <div className="flex items-center gap-3">
-              <Calendar size={16} className="text-surface-400" />
+
+            {/* Member Since */}
+            <div className="flex items-start gap-3 p-3.5 rounded-xl bg-surface-50 dark:bg-surface-800/40 border border-surface-100 dark:border-surface-800">
+              <Calendar size={18} className="text-secondary-500 mt-0.5 shrink-0" />
               <div>
-                <p className="text-xs text-surface-400">Member Since</p>
-                <p className="text-sm font-medium text-surface-900 dark:text-white">{new Date(user.joinedAt).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</p>
+                <p className="text-xs text-surface-400 font-medium">Member Since</p>
+                <p className="text-sm font-semibold text-surface-900 dark:text-white">{new Date(user.joinedAt).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</p>
               </div>
             </div>
-            <div className="flex items-center gap-3">
-              <BookOpen size={16} className="text-surface-400" />
-              <div>
-                <p className="text-xs text-surface-400">Native Language</p>
-                <p className="text-sm font-medium text-surface-900 dark:text-white">{user.nativeLanguage}</p>
+
+            {/* Daily Goal Preference */}
+            <div className="p-3.5 rounded-xl bg-surface-50 dark:bg-surface-800/40 border border-surface-100 dark:border-surface-800">
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <Clock size={16} className="text-warning-500" />
+                  <p className="text-xs text-surface-400 font-medium">Daily Goal (min/day)</p>
+                </div>
+                <span className="text-xs font-bold text-primary-600 dark:text-primary-400">{user.dailyGoalMinutes} min</span>
+              </div>
+              <div className="flex flex-wrap gap-1.5 mt-1">
+                {GOAL_OPTIONS.map((mins) => (
+                  <button
+                    key={mins}
+                    type="button"
+                    onClick={() => handleUpdateSetting('dailyGoalMinutes', mins)}
+                    className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all ${
+                      user.dailyGoalMinutes === mins
+                        ? 'bg-primary-600 text-white shadow-sm'
+                        : 'bg-white dark:bg-surface-700 text-surface-600 dark:text-surface-300 hover:bg-surface-100 dark:hover:bg-surface-600 border border-surface-200 dark:border-surface-600'
+                    }`}
+                  >
+                    {mins}m
+                  </button>
+                ))}
               </div>
             </div>
-            <div className="flex items-center gap-3">
-              <Target size={16} className="text-surface-400" />
-              <div>
-                <p className="text-xs text-surface-400">Daily Goal</p>
-                <p className="text-sm font-medium text-surface-900 dark:text-white">{user.dailyGoalMinutes} min/day</p>
+
+            {/* Learning Level Preference */}
+            <div className="p-3.5 rounded-xl bg-surface-50 dark:bg-surface-800/40 border border-surface-100 dark:border-surface-800">
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <Target size={16} className="text-danger-500" />
+                  <p className="text-xs text-surface-400 font-medium">CEFR Learning Level</p>
+                </div>
+                <span className="text-xs font-bold text-primary-600 dark:text-primary-400">{user.learningLevel || 'A1'}</span>
+              </div>
+              <div className="flex flex-wrap gap-1.5 mt-1">
+                {LEVEL_OPTIONS.map((lvl) => (
+                  <button
+                    key={lvl}
+                    type="button"
+                    onClick={() => handleUpdateSetting('learningLevel', lvl)}
+                    className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all ${
+                      (user.learningLevel || 'A1') === lvl
+                        ? 'bg-primary-600 text-white shadow-sm'
+                        : 'bg-white dark:bg-surface-700 text-surface-600 dark:text-surface-300 hover:bg-surface-100 dark:hover:bg-surface-600 border border-surface-200 dark:border-surface-600'
+                    }`}
+                  >
+                    {lvl}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Native Language Preference */}
+            <div className="p-3.5 rounded-xl bg-surface-50 dark:bg-surface-800/40 border border-surface-100 dark:border-surface-800 sm:col-span-2">
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <Globe size={16} className="text-primary-500" />
+                  <p className="text-xs text-surface-400 font-medium">Native Language (Ana Dili)</p>
+                </div>
+                <span className="text-xs font-bold text-primary-600 dark:text-primary-400">{user.nativeLanguage}</span>
+              </div>
+              <div className="flex flex-wrap gap-1.5 mt-1">
+                {LANGUAGE_OPTIONS.map((lang) => (
+                  <button
+                    key={lang}
+                    type="button"
+                    onClick={() => handleUpdateSetting('nativeLanguage', lang)}
+                    className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all ${
+                      user.nativeLanguage === lang
+                        ? 'bg-primary-600 text-white shadow-sm'
+                        : 'bg-white dark:bg-surface-700 text-surface-600 dark:text-surface-300 hover:bg-surface-100 dark:hover:bg-surface-600 border border-surface-200 dark:border-surface-600'
+                    }`}
+                  >
+                    {lang}
+                  </button>
+                ))}
               </div>
             </div>
           </div>
@@ -304,7 +407,7 @@ export default function ProfilePage() {
             <Lock size={20} className="text-danger-500" />
             <h2 className="font-display text-xl font-bold text-surface-900 dark:text-white">Change Password</h2>
           </div>
-          {pwChanged && <div className="mb-4 p-3 rounded-xl bg-success-50 dark:bg-success-500/10 text-success-600 dark:text-success-400 text-sm">Password changed successfully!</div>}
+          {pwChanged && <div className="mb-4 p-3 rounded-xl bg-success-50 dark:bg-success-500/10 text-success-600 dark:text-success-400 text-sm font-medium flex items-center gap-1.5"><CheckCircle2 size={16} /> Password changed successfully!</div>}
           {pwError && <div className="mb-4 p-3 rounded-xl bg-danger-50 dark:bg-danger-500/10 text-danger-600 dark:text-danger-400 text-sm">{pwError}</div>}
           <form onSubmit={handlePwSubmit} className="space-y-4">
             <div>

@@ -5,8 +5,6 @@ import { Mail, User, ArrowRight, ArrowLeft, Loader2, AlertCircle, CheckCircle2, 
 import AuthLayout from '../components/layout/AuthLayout';
 import FormInput from '../components/auth/FormInput';
 import PasswordInput from '../components/auth/PasswordInput';
-import SocialButtons from '../components/auth/SocialButtons';
-import AuthDivider from '../components/auth/AuthDivider';
 import Button from '../components/ui/Button';
 import { authService } from '../services';
 
@@ -245,11 +243,6 @@ export default function RegisterPage() {
               Davam Et
               <ArrowRight size={18} />
             </Button>
-
-            <div className="pt-2">
-              <AuthDivider />
-              <SocialButtons />
-            </div>
 
             <p className="text-center text-sm text-surface-500 dark:text-surface-400 mt-5">
               Artıq hesabınız var?{' '}

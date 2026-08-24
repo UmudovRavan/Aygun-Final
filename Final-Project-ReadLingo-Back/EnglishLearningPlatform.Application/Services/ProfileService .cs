@@ -56,6 +56,18 @@ namespace EnglishLearningPlatform.Application.Services
                 ? Math.Round(totalCorrect / (double)totalAnswered * 100, 1)
                 : 0;
 
+            var histories = await _unitOfWork.ReadingHistories.GetByUserIdAsync(userId, cancellationToken);
+            var today = DateTime.UtcNow.Date;
+            var todayHistories = histories.Where(h => h.LastReadAt.Date == today).ToList();
+
+            dto.TodayReadingMinutes = todayHistories
+                .GroupBy(h => h.StoryId)
+                .Sum(g => Math.Max(1, g.First().Story?.EstimatedMinutes ?? 5));
+
+            dto.TotalReadingTimeMinutes = histories
+                .GroupBy(h => h.StoryId)
+                .Sum(g => Math.Max(1, g.First().Story?.EstimatedMinutes ?? 5));
+
             return Result<ProfileDto>.Success(dto);
         }
 

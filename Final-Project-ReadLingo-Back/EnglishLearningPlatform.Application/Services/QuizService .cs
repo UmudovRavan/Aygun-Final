@@ -450,13 +450,15 @@ namespace EnglishLearningPlatform.Application.Services
             3. Each question must have EXACTLY 4 distinct, plausible options (A, B, C, D).
             4. "correctAnswer" must match exactly one of the 4 strings in "options".
             5. "explanation" must be a concise sentence (in English) explaining why this answer is correct based on the story.
-            6. Respond ONLY as a JSON array of objects with NO markdown formatting, matching this schema:
+            6. "explanationAz" must be a natural, clear Azerbaijani explanation (in Azerbaijani) explaining why this answer is correct.
+            7. Respond ONLY as a JSON array of objects with NO markdown formatting, matching this schema:
             [
               {
                 "question": "What did the character do after discovering the key?",
                 "options": ["He opened the chest", "He gave it away", "He threw it into the lake", "He hid it under his bed"],
                 "correctAnswer": "He opened the chest",
-                "explanation": "The story mentions that he immediately unlocked the wooden chest."
+                "explanation": "The story mentions that he immediately unlocked the wooden chest.",
+                "explanationAz": "Hekayədə qeyd olunur ki, o dərhal taxta sandığı açdı."
               }
             ]
             """;
@@ -524,6 +526,7 @@ namespace EnglishLearningPlatform.Application.Services
                         TimeLimitSeconds = DefaultTimeLimitSeconds,
                         CorrectAnswer = correct,
                         Explanation = item.Explanation,
+                        ExplanationAz = item.ExplanationAz,
                         Answers = answers,
                     });
                 }
@@ -558,37 +561,42 @@ namespace EnglishLearningPlatform.Application.Services
             var questions = new List<QuestionDto>();
             var random = Random.Shared;
 
-            var fallbackTemplates = new List<(string Question, string Correct, List<string> Distractors, string Explanation)>
+            var fallbackTemplates = new List<(string Question, string Correct, List<string> Distractors, string Explanation, string ExplanationAz)>
             {
                 (
                     $"What is the primary theme or focus of '{chapter.Title}'?",
                     $"The key events and character actions in {chapter.Title}",
                     new List<string> { "A random cooking tutorial", "An unrelated technical manual", "An elementary mathematics exercise" },
-                    "The chapter centers on these storyline developments."
+                    "The chapter centers on these storyline developments.",
+                    "Bu fəsil əsasən hekayədəki hadisələrin inkişafına və obrazların fəaliyyətlərinə fokuslanır."
                 ),
                 (
                     $"How does the narrative progress in '{chapter.Title}'?",
                     "Through descriptive events and dialogues",
                     new List<string> { "Without any character interaction", "Exclusively through numerical data", "By skipping all context" },
-                    "The story progresses through situational descriptions and actions."
+                    "The story progresses through situational descriptions and actions.",
+                    "Hekayə təsvir olunan hadisələr və dialoqlar vasitəsilə irəliləyir."
                 ),
                 (
                     $"What is the key takeaway from reading '{chapter.Title}'?",
                     "Understanding the context and reinforcing vocabulary",
                     new List<string> { "Memorizing irrelevant details", "Ignoring sentence structures", "Avoiding unfamiliar words" },
-                    "Reading helps learners comprehend context and build vocabulary."
+                    "Reading helps learners comprehend context and build vocabulary.",
+                    "Mətni oxumaq konteksti daha dərindən dərk etməyə və lüğət ehtiyatını artırmağa kömək edir."
                 ),
                 (
                     $"Which aspect is most emphasized in '{chapter.Title}'?",
                     "The development of the storyline and expressions used",
                     new List<string> { "A totally unconnected historic event", "An abstract formula", "A separate unrelated narrative" },
-                    "The chapter highlights this particular narrative flow."
+                    "The chapter highlights this particular narrative flow.",
+                    "Fəsil süjetin inkişafını və istifadə olunan ifadələri xüsusi vurğulayır."
                 ),
                 (
                     $"What is the best way to consolidate learning from '{chapter.Title}'?",
                     "Reviewing new vocabulary and reflecting on chapter events",
                     new List<string> { "Disregarding newly learned words", "Never practicing comprehension", "Skipping future chapters" },
-                    "Reviewing vocabulary and story points solidifies comprehension."
+                    "Reviewing vocabulary and story points solidifies comprehension.",
+                    "Yeni öyrənilən sözləri təkrar etmək və hekayə məzmununu xatırlamaq dərsi möhkəmləndirir."
                 )
             };
 
@@ -609,6 +617,7 @@ namespace EnglishLearningPlatform.Application.Services
                     TimeLimitSeconds = DefaultTimeLimitSeconds,
                     CorrectAnswer = t.Correct,
                     Explanation = t.Explanation,
+                    ExplanationAz = t.ExplanationAz,
                     Answers = options.Select((opt, idx) => new AnswerDto
                     {
                         Id = Guid.NewGuid(),
@@ -626,7 +635,8 @@ namespace EnglishLearningPlatform.Application.Services
             string Question,
             List<string> Options,
             string CorrectAnswer,
-            string? Explanation
+            string? Explanation,
+            string? ExplanationAz
         );
 
         public async Task<Result> RecordQuizResultAsync(

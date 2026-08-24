@@ -148,6 +148,21 @@ export default function StoryReaderPage() {
     return () => clearInterval(interval);
   }, []);
 
+  // Track active reading time for today
+  useEffect(() => {
+    const todayStr = new Date().toISOString().split('T')[0];
+    const key = `readlingo_reading_seconds_${todayStr}`;
+    const interval = setInterval(() => {
+      if (!document.hidden) {
+        const curr = Number(localStorage.getItem(key) || 0) + 1;
+        localStorage.setItem(key, curr.toString());
+        window.dispatchEvent(new CustomEvent('reading-time-tick', { detail: { seconds: curr } }));
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   useEffect(() => {
     const load = async () => {
       const [s, u] = await Promise.all([storyService.getStoryById(id!), userService.getProfile()]);
@@ -957,14 +972,30 @@ export default function StoryReaderPage() {
               )}
 
               {/* AI Explanation Feedback */}
-              {quizShowFeedback && question.explanation && (
+              {quizShowFeedback && (question.explanation || question.explanationAz) && (
                 <motion.div
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="mt-4 p-3.5 rounded-xl bg-blue-50/80 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 text-xs sm:text-sm text-blue-900 dark:text-blue-200"
+                  className="mt-4 p-4 rounded-xl bg-blue-50/90 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800/80 text-xs sm:text-sm shadow-sm space-y-2.5"
                 >
-                  <strong className="font-semibold block mb-0.5">💡 İzah (Explanation):</strong>
-                  {question.explanation}
+                  <div className="flex items-center gap-1.5 font-bold text-blue-950 dark:text-blue-200 text-sm">
+                    <span>💡</span>
+                    <span>İzah / Explanation</span>
+                  </div>
+
+                  {question.explanationAz && (
+                    <div className="flex items-start gap-2 text-surface-900 dark:text-surface-100 font-medium">
+                      <span className="shrink-0 px-1.5 py-0.5 rounded bg-primary-100 dark:bg-primary-900/50 text-primary-700 dark:text-primary-300 text-[11px] font-bold tracking-wide uppercase">AZ</span>
+                      <p className="leading-relaxed">{question.explanationAz}</p>
+                    </div>
+                  )}
+
+                  {question.explanation && (
+                    <div className="flex items-start gap-2 text-surface-600 dark:text-surface-300">
+                      <span className="shrink-0 px-1.5 py-0.5 rounded bg-surface-200 dark:bg-surface-800 text-surface-600 dark:text-surface-400 text-[11px] font-bold tracking-wide uppercase">EN</span>
+                      <p className="leading-relaxed">{question.explanation}</p>
+                    </div>
+                  )}
                 </motion.div>
               )}
 

@@ -12,6 +12,7 @@ export interface User {
     currentLevel: number; progressToNextLevel: number; nextLevelXP: number;
     storiesRead: number; wordsLearned: number; quizzesCompleted: number;
     averageAccuracy: number; totalReadingTime: number;
+    todayReadingTime?: number;
   };
   badges: Badge[];
 }
@@ -76,6 +77,7 @@ export interface QuizQuestion {
   pairs?: { left: string; right: string }[];
   correctAnswer: string;
   explanation?: string;
+  explanationAz?: string;
   timeLimit?: number;
 }
 export interface QuizResult { score: number; totalQuestions: number; accuracy: number; xpEarned: number; heartsRemaining: number; correctAnswers: number; incorrectAnswers: number; }

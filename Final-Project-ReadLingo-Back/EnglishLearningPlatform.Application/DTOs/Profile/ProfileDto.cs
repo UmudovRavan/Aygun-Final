@@ -48,5 +48,9 @@ namespace EnglishLearningPlatform.Application.DTOs.Profile
         public int DailyGoalMinutes { get; set; } = 15;
 
         public string LearningLevel { get; set; } = "A1";
+
+        public int TodayReadingMinutes { get; set; }
+
+        public int TotalReadingTimeMinutes { get; set; }
     }
 }

@@ -8,7 +8,7 @@ import LingoMascot from '../components/ui/LingoMascot';
 import { LoadingState } from '../components/ui/Loading';
 import EmptyState from '../components/ui/EmptyState';
 import FlashcardPopup from '../components/ui/FlashcardPopup';
-import { vocabularyService } from '../services';
+import { vocabularyService, translateWordToAz } from '../services';
 import type { VocabularyItem } from '../types';
 
 const masteryColors: Record<string, string> = {
@@ -34,6 +34,8 @@ export default function VocabularyPage() {
   const [showFlashcardPopup, setShowFlashcardPopup] = useState(true);
 
   useEffect(() => {
+    let isMounted = true;
+
     const load = async () => {
       const v = await vocabularyService.getVocabulary();
       const masteredIds: string[] = JSON.parse(localStorage.getItem('readlingo_mastered_word_ids') || '[]');
@@ -55,7 +57,6 @@ export default function VocabularyPage() {
         } else if (item.masteryLevel) {
           level = item.masteryLevel;
         } else {
-          // If unreviewed, alternate or set New
           level = index % 3 === 0 ? 'New' : 'Learning';
         }
 
@@ -67,10 +68,47 @@ export default function VocabularyPage() {
         };
       });
 
+      if (!isMounted) return;
       setItems(merged);
       setLoading(false);
+
+      // Asynchronously resolve any words that still have missing translations
+      const needsTranslation = merged.filter((i) => !i.translation || i.translation.trim() === '' || i.translation.toLowerCase() === i.word.toLowerCase());
+      if (needsTranslation.length > 0) {
+        const updatedList = [...merged];
+        let hasAnyUpdates = false;
+
+        for (let i = 0; i < needsTranslation.length; i += 6) {
+          if (!isMounted) break;
+          const chunk = needsTranslation.slice(i, i + 6);
+          await Promise.all(
+            chunk.map(async (wordItem) => {
+              try {
+                const trans = await translateWordToAz(wordItem.word);
+                if (trans && trans.toLowerCase() !== wordItem.word.toLowerCase()) {
+                  const idx = updatedList.findIndex((x) => x.id === wordItem.id);
+                  if (idx !== -1) {
+                    updatedList[idx] = { ...updatedList[idx], translation: trans };
+                    hasAnyUpdates = true;
+                  }
+                }
+              } catch {
+                // ignore
+              }
+            })
+          );
+          if (hasAnyUpdates && isMounted) {
+            setItems([...updatedList]);
+          }
+        }
+      }
     };
+
     load();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const handleToggleFavorite = (id: string) => {
@@ -245,7 +283,10 @@ export default function VocabularyPage() {
                   </div>
 
                   <p className="text-sm text-surface-700 dark:text-surface-200 mb-2">
-                    <span className="font-semibold text-primary-600 dark:text-primary-400">Tərcümə:</span> {item.translation}
+                    <span className="font-semibold text-primary-600 dark:text-primary-400">Tərcümə:</span>{' '}
+                    <span className="font-medium text-surface-900 dark:text-white">
+                      {item.translation || <span className="text-xs text-surface-400 italic">tərcümə olunur...</span>}
+                    </span>
                   </p>
                   
                   {item.example && (
@@ -254,15 +295,12 @@ export default function VocabularyPage() {
                     </p>
                   )}
 
-                  <div className="flex items-center gap-2 text-xs text-surface-400 mb-4">
-                    {item.storyTitle && (
-                      <>
-                        <span className="flex items-center gap-1"><BookOpen size={12} /> {item.storyTitle}</span>
-                        <span>·</span>
-                      </>
-                    )}
-                    <span>Təkrar: {item.reviewCount} dəfə</span>
-                  </div>
+                  {item.storyTitle && (
+                    <div className="flex items-center gap-1.5 text-xs text-surface-400 mb-3">
+                      <BookOpen size={12} />
+                      <span>{item.storyTitle}</span>
+                    </div>
+                  )}
                 </div>
 
                 {/* Card Actions */}

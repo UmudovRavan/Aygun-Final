@@ -20,6 +20,7 @@ namespace EnglishLearningPlatform.Application.DTOs.Quiz
         public List<AnswerDto> Answers { get; set; } = new();
         public string? CorrectAnswer { get; set; }
         public string? Explanation { get; set; }
+        public string? ExplanationAz { get; set; }
         public QuestionCategory Category { get; set; }
         public int TimeLimitSeconds { get; set; } = 15;
         public TranslationDirection Direction { get; set; }
