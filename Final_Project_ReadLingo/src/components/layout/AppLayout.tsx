@@ -94,6 +94,28 @@ export default function AppLayout({ children }: Props) {
     return () => window.removeEventListener('profile-updated', handleProfileUpdate);
   }, []);
 
+  useEffect(() => {
+    if (!userProfile || userProfile.plan !== 'free' || userProfile.hearts >= 5) return;
+
+    const RECOVERY_MS = 15 * 60 * 1000;
+    const interval = setInterval(() => {
+      const target = Number(localStorage.getItem('readlingo_heart_recovery_target'));
+      if (target && Date.now() >= target) {
+        const nextH = Math.min(5, userProfile.hearts + 1);
+        userService.updateProfile({ hearts: nextH }).then((updated) => {
+          setUserProfile(updated);
+          if (nextH < 5) {
+            localStorage.setItem('readlingo_heart_recovery_target', (Date.now() + RECOVERY_MS).toString());
+          } else {
+            localStorage.removeItem('readlingo_heart_recovery_target');
+          }
+        }).catch(() => {});
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [userProfile]);
+
   return (
     <div className="min-h-screen bg-surface-50 dark:bg-ink-950">
       <header className="sticky top-0 z-40 bg-white/80 dark:bg-surface-900/80 backdrop-blur-md border-b border-surface-100 dark:border-surface-800">

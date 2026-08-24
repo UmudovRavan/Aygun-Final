@@ -61,7 +61,25 @@ export default function AdminPage() {
   const [uploadingCover, setUploadingCover] = useState(false);
 
   const [showCreateCatModal, setShowCreateCatModal] = useState(false);
-  const [catForm, setCatForm] = useState({ name: '', description: '' });
+  const [editingCat, setEditingCat] = useState<Category | null>(null);
+  const [catForm, setCatForm] = useState({ name: '', description: '', iconUrl: '' });
+  const [uploadingCatCover, setUploadingCatCover] = useState(false);
+
+  const handleCatFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingCatCover(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      const url = await apiUploadFile<string>('/files/images?container=CategoryImages', formData);
+      setCatForm((prev) => ({ ...prev, iconUrl: getMediaUrl(url) }));
+    } catch (err: any) {
+      alert(err?.message || 'Failed to upload category image');
+    } finally {
+      setUploadingCatCover(false);
+    }
+  };
 
   const handleCoverFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -138,15 +156,20 @@ export default function AdminPage() {
     }
   };
 
-  const handleCreateCategory = async (e: React.FormEvent) => {
+  const handleSaveCategory = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await storyService.createCategory(catForm);
+      if (editingCat) {
+        await storyService.updateCategory(editingCat.id, catForm);
+      } else {
+        await storyService.createCategory(catForm);
+      }
       setShowCreateCatModal(false);
-      setCatForm({ name: '', description: '' });
+      setEditingCat(null);
+      setCatForm({ name: '', description: '', iconUrl: '' });
       loadData();
     } catch (err: any) {
-      alert(err?.message || 'Failed to create category.');
+      alert(err?.message || 'Failed to save category.');
     }
   };
 
@@ -460,22 +483,74 @@ export default function AdminPage() {
   const renderCategories = () => (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h2 className="text-lg font-bold text-surface-900 dark:text-white">All Categories</h2>
-        <Button onClick={() => setShowCreateCatModal(true)} className="flex items-center gap-2">
+        <div>
+          <h2 className="text-lg font-bold text-surface-900 dark:text-white">All Categories</h2>
+          <p className="text-surface-500 dark:text-surface-400 text-xs">Manage story categories and cover images</p>
+        </div>
+        <Button
+          onClick={() => {
+            setEditingCat(null);
+            setCatForm({ name: '', description: '', iconUrl: '' });
+            setShowCreateCatModal(true);
+          }}
+          className="flex items-center gap-2"
+        >
           <Plus size={16} /> Add Category
         </Button>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {categories.map((c) => (
-          <Card key={c.id} className="p-5 flex items-center justify-between">
-            <div>
-              <h3 className="text-surface-900 dark:text-white font-semibold mb-1">{c.name}</h3>
-              <p className="text-surface-500 dark:text-surface-400 text-xs">{c.storyCount || 0} stories</p>
+          <Card key={c.id} className="overflow-hidden p-0 border border-surface-200 dark:border-surface-800 hover:border-primary-500/50 transition-all group">
+            <div className="relative h-36 bg-surface-800 overflow-hidden">
+              {c.image || c.iconUrl ? (
+                <img
+                  src={c.image || c.iconUrl}
+                  alt={c.name}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary-900/60 to-surface-900 text-surface-300 font-bold text-sm">
+                  {c.name}
+                </div>
+              )}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+              <div className="absolute bottom-2 left-3 right-3 flex items-center justify-between text-white">
+                <span className="font-bold text-sm truncate">{c.name}</span>
+                <span className="text-xs bg-white/20 backdrop-blur px-2 py-0.5 rounded-full font-medium">
+                  {c.storyCount || 0} stories
+                </span>
+              </div>
             </div>
-            <button onClick={() => handleDeleteCategory(c.id)} className="p-1.5 text-surface-400 hover:text-danger-500 transition-colors" title="Delete Category">
-              <Trash2 className="w-4 h-4" />
-            </button>
+            <div className="p-3 flex items-center justify-between">
+              <p className="text-xs text-surface-500 dark:text-surface-400 truncate flex-1 mr-2">
+                {c.description || 'No description'}
+              </p>
+              <div className="flex items-center gap-1 shrink-0">
+                <button
+                  onClick={() => {
+                    setEditingCat(c);
+                    setCatForm({
+                      name: c.name,
+                      description: c.description || '',
+                      iconUrl: c.image || c.iconUrl || '',
+                    });
+                    setShowCreateCatModal(true);
+                  }}
+                  className="p-1.5 text-surface-400 hover:text-warning-500 transition-colors"
+                  title="Edit Category"
+                >
+                  <Edit className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => handleDeleteCategory(c.id)}
+                  className="p-1.5 text-surface-400 hover:text-danger-500 transition-colors"
+                  title="Delete Category"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
           </Card>
         ))}
       </div>
@@ -867,24 +942,85 @@ export default function AdminPage() {
           </div>
         )}
 
-        {/* Modal: Create Category */}
+        {/* Modal: Create/Edit Category */}
         {showCreateCatModal && (
           <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
             <div className="bg-white dark:bg-surface-900 rounded-2xl p-6 max-w-md w-full border border-surface-200 dark:border-surface-800 shadow-2xl">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="font-bold text-lg text-surface-900 dark:text-white">Add New Category</h3>
-                <button onClick={() => setShowCreateCatModal(false)}><X size={20} className="text-surface-400" /></button>
+                <h3 className="font-bold text-lg text-surface-900 dark:text-white">
+                  {editingCat ? 'Edit Category' : 'Add New Category'}
+                </h3>
+                <button
+                  onClick={() => {
+                    setShowCreateCatModal(false);
+                    setEditingCat(null);
+                  }}
+                >
+                  <X size={20} className="text-surface-400" />
+                </button>
               </div>
-              <form onSubmit={handleCreateCategory} className="space-y-4">
+              <form onSubmit={handleSaveCategory} className="space-y-4">
                 <div>
                   <label className="block text-xs font-semibold mb-1 text-surface-600 dark:text-surface-300">Category Name</label>
-                  <input required value={catForm.name} onChange={(e) => setCatForm({ ...catForm, name: e.target.value })} className="input text-sm" placeholder="Adventure" />
+                  <input
+                    required
+                    value={catForm.name}
+                    onChange={(e) => setCatForm({ ...catForm, name: e.target.value })}
+                    className="input text-sm"
+                    placeholder="e.g. Technology, Adventure, Science"
+                  />
                 </div>
                 <div>
                   <label className="block text-xs font-semibold mb-1 text-surface-600 dark:text-surface-300">Description</label>
-                  <input value={catForm.description} onChange={(e) => setCatForm({ ...catForm, description: e.target.value })} className="input text-sm" placeholder="Category description..." />
+                  <input
+                    value={catForm.description}
+                    onChange={(e) => setCatForm({ ...catForm, description: e.target.value })}
+                    className="input text-sm"
+                    placeholder="Short description of this category..."
+                  />
                 </div>
-                <Button type="submit" fullWidth>Create Category</Button>
+                <div>
+                  <label className="block text-xs font-semibold mb-1 text-surface-600 dark:text-surface-300">Category Cover Image</label>
+                  <div className="flex items-center gap-2">
+                    <input
+                      value={catForm.iconUrl}
+                      onChange={(e) => setCatForm({ ...catForm, iconUrl: e.target.value })}
+                      className="input text-sm flex-1"
+                      placeholder="Image URL or upload file"
+                    />
+                    <label className="px-3 py-2 rounded-lg bg-surface-200 dark:bg-surface-700 hover:bg-surface-300 dark:hover:bg-surface-600 text-surface-800 dark:text-white text-xs font-medium cursor-pointer shrink-0">
+                      {uploadingCatCover ? 'Uploading...' : 'Upload'}
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={handleCatFileUpload}
+                        disabled={uploadingCatCover}
+                      />
+                    </label>
+                  </div>
+                  {catForm.iconUrl && (
+                    <div className="mt-2 relative h-28 rounded-xl overflow-hidden border border-surface-200 dark:border-surface-700">
+                      <img src={catForm.iconUrl} alt="Preview" className="w-full h-full object-cover" />
+                    </div>
+                  )}
+                </div>
+                <div className="flex items-center gap-2 pt-2">
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    className="flex-1"
+                    onClick={() => {
+                      setShowCreateCatModal(false);
+                      setEditingCat(null);
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button type="submit" className="flex-1">
+                    {editingCat ? 'Save Changes' : 'Create Category'}
+                  </Button>
+                </div>
               </form>
             </div>
           </div>

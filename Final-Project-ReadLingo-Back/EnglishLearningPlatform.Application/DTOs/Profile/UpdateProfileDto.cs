@@ -29,5 +29,9 @@ namespace EnglishLearningPlatform.Application.DTOs.Profile
         public bool? IsAnonymousInLeaderboard { get; set; }
 
         public string? Plan { get; set; }
+
+        public int? DailyGoalMinutes { get; set; }
+
+        public string? LearningLevel { get; set; }
     }
 }

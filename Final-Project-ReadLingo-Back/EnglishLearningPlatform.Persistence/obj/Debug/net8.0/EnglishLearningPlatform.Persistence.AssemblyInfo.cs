@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EnglishLearningPlatform.Persistence")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+870446a3a8ddaef21ab5ed141acd331d5fef5ea0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bcf04257fa9434a99a8abfabaddcd1b85780e7ae")]
 [assembly: System.Reflection.AssemblyProductAttribute("EnglishLearningPlatform.Persistence")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EnglishLearningPlatform.Persistence")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

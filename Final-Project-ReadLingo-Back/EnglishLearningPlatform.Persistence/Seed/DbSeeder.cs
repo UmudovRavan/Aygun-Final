@@ -28,6 +28,16 @@ namespace EnglishLearningPlatform.Persistence.Seed
                 var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
                 await context.Database.MigrateAsync();
 
+                try
+                {
+                    await context.Database.ExecuteSqlRawAsync("IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='StoryCategories' AND COLUMN_NAME='IconUrl') ALTER TABLE [StoryCategories] ALTER COLUMN [IconUrl] nvarchar(max) NULL;");
+                    await context.Database.ExecuteSqlRawAsync("IF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='AspNetUsers' AND COLUMN_NAME='DailyGoalMinutes') ALTER TABLE [AspNetUsers] ADD [DailyGoalMinutes] int NOT NULL DEFAULT 15;");
+                }
+                catch (Exception sqlEx)
+                {
+                    logger.LogWarning(sqlEx, "Notice: could not run direct alter column on DB entities");
+                }
+
                 await SeedRolesAsync(scope.ServiceProvider);
                 await SeedAdminUserAsync(scope.ServiceProvider);
                 await SeedStoryLevelsAsync(context);
@@ -118,11 +128,12 @@ namespace EnglishLearningPlatform.Persistence.Seed
                 return;
 
             context.StoryCategories.AddRange(
-                new StoryCategory { Name = "Daily Life", Description = "Everyday situations and routines." },
-                new StoryCategory { Name = "Travel", Description = "Airports, hotels, and getting around." },
-                new StoryCategory { Name = "Business", Description = "Workplace and professional communication." },
-                new StoryCategory { Name = "Culture", Description = "Traditions, history, and customs." },
-                new StoryCategory { Name = "Fiction", Description = "Short stories and folk tales." });
+                new StoryCategory { Name = "Business", Description = "Workplace and professional communication.", IconUrl = "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=600&q=80" },
+                new StoryCategory { Name = "Daily Life", Description = "Everyday situations and routines.", IconUrl = "https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=600&q=80" },
+                new StoryCategory { Name = "Fiction", Description = "Short stories and folk tales.", IconUrl = "https://images.unsplash.com/photo-1532012164546-f432f2e3777f?auto=format&fit=crop&w=600&q=80" },
+                new StoryCategory { Name = "Horror", Description = "Spooky mysteries and dark thrillers.", IconUrl = "https://images.unsplash.com/photo-1509248961158-e54f6934749c?auto=format&fit=crop&w=600&q=80" },
+                new StoryCategory { Name = "Travel", Description = "Airports, hotels, and getting around.", IconUrl = "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=600&q=80" },
+                new StoryCategory { Name = "Culture", Description = "Traditions, history, and customs.", IconUrl = "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&w=600&q=80" });
 
             await context.SaveChangesAsync();
         }

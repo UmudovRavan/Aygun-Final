@@ -7,7 +7,7 @@ export interface User {
   hearts: number; maxHearts: number;
   plan: 'free' | 'pro' | 'premium';
   isAnonymousInLeaderboard?: boolean;
-  nativeLanguage: string; dailyGoalMinutes: number; joinedAt: string;
+  nativeLanguage: string; dailyGoalMinutes: number; learningLevel?: string; joinedAt: string;
   stats: {
     currentLevel: number; progressToNextLevel: number; nextLevelXP: number;
     storiesRead: number; wordsLearned: number; quizzesCompleted: number;
@@ -43,7 +43,7 @@ export interface Story {
 }
 
 export interface StoryChapter { id: string; chapterNumber: number; title: string; content: string; readingTimeMinutes: number; isCompleted: boolean; }
-export interface Category { id: string; name: string; icon: string; color: string; storyCount: number; image: string; }
+export interface Category { id: string; name: string; icon?: string; color?: string; description?: string; storyCount: number; image: string; iconUrl?: string; }
 
 export interface VocabularyItem {
   id: string; word: string; translation: string; pronunciation: string;

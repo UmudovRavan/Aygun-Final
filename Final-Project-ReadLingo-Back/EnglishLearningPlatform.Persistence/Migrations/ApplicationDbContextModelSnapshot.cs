@@ -217,6 +217,9 @@ namespace EnglishLearningPlatform.Persistence.Migrations
                     b.Property<int>("CurrentTier")
                         .HasColumnType("int");
 
+                    b.Property<int>("DailyGoalMinutes")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("DateOfBirth")
                         .HasColumnType("datetime2");
 
@@ -1296,8 +1299,7 @@ namespace EnglishLearningPlatform.Persistence.Migrations
                         .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("IconUrl")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");

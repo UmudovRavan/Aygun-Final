@@ -322,6 +322,22 @@
   },
   {
     "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.AuthController",
+    "Method": "ResendConfirmationEmail",
+    "RelativePath": "api/v1/auth/resend-confirmation-email",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "EnglishLearningPlatform.Application.DTOs.Auth.ForgotPasswordDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EnglishLearningPlatform.API.Controllers.V1.AuthController",
     "Method": "ResetPassword",
     "RelativePath": "api/v1/auth/reset-password",
     "HttpMethod": "POST",

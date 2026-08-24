@@ -35,6 +35,8 @@ namespace EnglishLearningPlatform.Application.Services
             dto.LongestStreak = user.LongestStreak;
             dto.TotalXp = user.TotalXp;
             dto.Hearts = user.Hearts;
+            dto.DailyGoalMinutes = user.DailyGoalMinutes > 0 ? user.DailyGoalMinutes : 15;
+            dto.LearningLevel = !string.IsNullOrWhiteSpace(user.LearningLevel) ? user.LearningLevel : "A1";
             dto.IsAnonymousInLeaderboard = user.IsAnonymousInLeaderboard;
             dto.Plan = user.CurrentTier.ToString().ToLowerInvariant();
 
@@ -101,6 +103,17 @@ namespace EnglishLearningPlatform.Application.Services
                 user.UserName = dto.UserName.Trim();
                 user.NormalizedUserName = dto.UserName.Trim().ToUpperInvariant();
             }
+
+            if (dto.DailyGoalMinutes.HasValue && dto.DailyGoalMinutes.Value > 0)
+            {
+                user.DailyGoalMinutes = dto.DailyGoalMinutes.Value;
+            }
+
+            if (!string.IsNullOrWhiteSpace(dto.LearningLevel))
+            {
+                user.LearningLevel = dto.LearningLevel.Trim();
+            }
+
             user.UpdatedAt = DateTime.UtcNow;
             _unitOfWork.Users.Update(user);
             await _unitOfWork.SaveChangesAsync(cancellationToken);

@@ -1,4 +1,4 @@
-﻿using EnglishLearningPlatform.Application.Interfaces.Repositories;
+using EnglishLearningPlatform.Application.Interfaces.Repositories;
 using Microsoft.Extensions.Options;
 using EnglishLearningPlatform.Application.Responses;
 using System;
@@ -39,7 +39,7 @@ namespace EnglishLearningPlatform.Application.Services
         public async Task<Result<AuthResponseDto>> RegisterAsync(RegisterDto dto, CancellationToken cancellationToken = default)
         {
             var (succeeded, errors, userId) = await _identityService.RegisterAsync(
-                dto.Email, dto.Password, dto.FirstName, dto.LastName);
+                dto.Email, dto.Password, dto.FirstName, dto.LastName, dto.NativeLanguage, dto.LearningLevel, dto.DailyGoalMinutes);
 
             if (!succeeded)
                 return Result<AuthResponseDto>.Failure(string.Join("; ", errors));
@@ -186,6 +186,15 @@ namespace EnglishLearningPlatform.Application.Services
                 cancellationToken);
 
             return Result.Success("Confirmation email sent.");
+        }
+
+        public async Task<Result> SendEmailConfirmationByEmailAsync(string email, CancellationToken cancellationToken = default)
+        {
+            var userId = await _identityService.GetUserIdByEmailAsync(email);
+            if (userId is null)
+                return Result.Success("If an account with this email exists, a confirmation link has been sent.");
+
+            return await SendEmailConfirmationAsync(userId.Value, cancellationToken);
         }
 
         public async Task<Result> ChangePasswordAsync(Guid userId, ChangePasswordDto dto, CancellationToken cancellationToken = default)

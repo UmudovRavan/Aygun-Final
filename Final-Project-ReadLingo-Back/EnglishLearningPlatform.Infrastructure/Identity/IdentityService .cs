@@ -20,7 +20,7 @@ namespace EnglishLearningPlatform.Infrastructure.Identity
         }
 
         public async Task<(bool Succeeded, IEnumerable<string> Errors, Guid UserId)> RegisterAsync(
-            string email, string password, string firstName, string lastName)
+            string email, string password, string firstName, string lastName, string? nativeLanguage = null, string? learningLevel = null, int? dailyGoalMinutes = null)
         {
             var username = !string.IsNullOrWhiteSpace(firstName) && !firstName.Contains('@')
                 ? firstName
@@ -32,6 +32,9 @@ namespace EnglishLearningPlatform.Infrastructure.Identity
                 Email = email,
                 FirstName = firstName,
                 LastName = lastName,
+                NativeLanguage = !string.IsNullOrWhiteSpace(nativeLanguage) ? nativeLanguage : "Azerbaijani",
+                LearningLevel = !string.IsNullOrWhiteSpace(learningLevel) ? learningLevel : "A1",
+                DailyGoalMinutes = dailyGoalMinutes.HasValue && dailyGoalMinutes.Value > 0 ? dailyGoalMinutes.Value : 15,
             };
 
             var result = await _userManager.CreateAsync(user, password);

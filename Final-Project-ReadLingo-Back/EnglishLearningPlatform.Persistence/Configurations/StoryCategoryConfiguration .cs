@@ -1,4 +1,4 @@
-﻿using EnglishLearningPlatform.Domain.Entities;
+using EnglishLearningPlatform.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -18,7 +18,7 @@ namespace EnglishLearningPlatform.Persistence.Configurations
 
             builder.Property(c => c.Name).HasMaxLength(100).IsRequired();
             builder.Property(c => c.Description).HasMaxLength(500);
-            builder.Property(c => c.IconUrl).HasMaxLength(500);
+            builder.Property(c => c.IconUrl).HasColumnType("nvarchar(max)");
 
             builder.HasIndex(c => c.Name).IsUnique();
 

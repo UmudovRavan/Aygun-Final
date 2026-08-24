@@ -1,4 +1,4 @@
-﻿using Asp.Versioning;
+using Asp.Versioning;
 using EnglishLearningPlatform.API.Common;
 using EnglishLearningPlatform.API.Filters;
 using EnglishLearningPlatform.Application.Interfaces.Services;
@@ -88,22 +88,31 @@ namespace EnglishLearningPlatform.API.Extensions
                 options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
 
                 options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(context =>
-                    RateLimitPartition.GetFixedWindowLimiter(
-                        partitionKey: context.User.Identity?.IsAuthenticated == true
-                            ? context.User.Identity!.Name ?? "authenticated"
-                            : context.Connection.RemoteIpAddress?.ToString() ?? "anonymous",
+                {
+                    if (context.Request.Method == "OPTIONS" || context.Request.Path.StartsWithSegments("/health"))
+                    {
+                        return RateLimitPartition.GetNoLimiter("unlimited");
+                    }
+
+                    var partitionKey = context.User.Identity?.IsAuthenticated == true
+                        ? context.User.Identity.Name ?? "authenticated"
+                        : context.Connection.RemoteIpAddress?.ToString() ?? "anonymous";
+
+                    return RateLimitPartition.GetFixedWindowLimiter(
+                        partitionKey: partitionKey,
                         factory: _ => new FixedWindowRateLimiterOptions
                         {
-                            PermitLimit = 100,
+                            PermitLimit = 1000,
                             Window = TimeSpan.FromMinutes(1),
-                            QueueLimit = 0,
-                        }));
+                            QueueLimit = 100,
+                        });
+                });
 
                 options.AddFixedWindowLimiter("auth", opt =>
                 {
-                    opt.PermitLimit = 5;
+                    opt.PermitLimit = 30;
                     opt.Window = TimeSpan.FromMinutes(1);
-                    opt.QueueLimit = 0;
+                    opt.QueueLimit = 10;
                 });
             });
 

@@ -19,14 +19,14 @@ export const mockUser: User = {
 };
 
 export const mockCategories: Category[] = [
-  { id: 'c1', name: 'Adventure', icon: 'Compass', color: 'from-primary-500 to-primary-700', storyCount: 12, image: 'https://images.pexels.com/photos/12716176/pexels-photo-12716176.jpeg?auto=compress&cs=tinysrgb&w=400' },
-  { id: 'c2', name: 'Mystery', icon: 'Search', color: 'from-surface-700 to-surface-900', storyCount: 8, image: 'https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?auto=compress&cs=tinysrgb&w=400' },
-  { id: 'c3', name: 'Fantasy', icon: 'Sparkles', color: 'from-secondary-500 to-secondary-700', storyCount: 15, image: 'https://images.pexels.com/photos/1580288/pexels-photo-1580288.jpeg?auto=compress&cs=tinysrgb&w=400' },
-  { id: 'c4', name: 'Science', icon: 'Atom', color: 'from-success-500 to-success-700', storyCount: 6, image: 'https://images.pexels.com/photos/2280549/pexels-photo-2280549.jpeg?auto=compress&cs=tinysrgb&w=400' },
-  { id: 'c5', name: 'History', icon: 'Scroll', color: 'from-warning-500 to-warning-700', storyCount: 9, image: 'https://images.pexels.com/photos/2168974/pexels-photo-2168974.jpeg?auto=compress&cs=tinysrgb&w=400' },
-  { id: 'c6', name: 'Daily Life', icon: 'Coffee', color: 'from-danger-500 to-danger-700', storyCount: 11, image: 'https://images.pexels.com/photos/302899/pexels-photo-302899.jpeg?auto=compress&cs=tinysrgb&w=400' },
-  { id: 'c7', name: 'Travel', icon: 'Plane', color: 'from-primary-400 to-secondary-500', storyCount: 7, image: 'https://images.pexels.com/photos/2506923/pexels-photo-2506923.jpeg?auto=compress&cs=tinysrgb&w=400' },
-  { id: 'c8', name: 'Nature', icon: 'TreePine', color: 'from-success-400 to-success-600', storyCount: 10, image: 'https://images.pexels.com/photos/1580288/pexels-photo-1580288.jpeg?auto=compress&cs=tinysrgb&w=400' },
+  { id: 'c1', name: 'Adventure', icon: 'Compass', color: 'from-emerald-600 to-teal-800', storyCount: 12, image: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=600&q=80' },
+  { id: 'c2', name: 'Business', icon: 'Briefcase', color: 'from-blue-600 to-indigo-800', storyCount: 8, image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=600&q=80' },
+  { id: 'c3', name: 'Daily Life', icon: 'Coffee', color: 'from-amber-600 to-rose-700', storyCount: 11, image: 'https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=600&q=80' },
+  { id: 'c4', name: 'Fiction', icon: 'BookOpen', color: 'from-purple-600 to-indigo-900', storyCount: 15, image: 'https://images.unsplash.com/photo-1532012164546-f432f2e3777f?auto=format&fit=crop&w=600&q=80' },
+  { id: 'c5', name: 'Horror', icon: 'Ghost', color: 'from-zinc-900 via-slate-900 to-red-950', storyCount: 9, image: 'https://images.unsplash.com/photo-1509248961158-e54f6934749c?auto=format&fit=crop&w=600&q=80' },
+  { id: 'c6', name: 'Travel', icon: 'Plane', color: 'from-cyan-600 to-blue-700', storyCount: 7, image: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=600&q=80' },
+  { id: 'c7', name: 'Science', icon: 'Atom', color: 'from-teal-600 to-cyan-800', storyCount: 6, image: 'https://images.unsplash.com/photo-1507413245164-6160d8298b31?auto=format&fit=crop&w=600&q=80' },
+  { id: 'c8', name: 'History', icon: 'Scroll', color: 'from-amber-700 to-yellow-900', storyCount: 10, image: 'https://images.unsplash.com/photo-1461360370896-922624d12aa1?auto=format&fit=crop&w=600&q=80' },
 ];
 
 const chapterContent = (n: number) =>

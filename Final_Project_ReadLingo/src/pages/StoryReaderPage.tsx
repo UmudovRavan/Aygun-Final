@@ -88,11 +88,15 @@ export default function StoryReaderPage() {
   const [midnightCountdown, setMidnightCountdown] = useState<number>(0);
 
   useEffect(() => {
-    if (!isFreeUser || quizHearts > 0) return;
+    if (!isFreeUser || quizHearts >= MAX_HEARTS) {
+      setHeartCountdown(0);
+      return;
+    }
 
+    const RECOVERY_MS = 15 * 60 * 1000;
     let target = Number(localStorage.getItem('readlingo_heart_recovery_target'));
     if (!target || isNaN(target) || target <= Date.now()) {
-      target = Date.now() + 4 * 60 * 60 * 1000;
+      target = Date.now() + RECOVERY_MS;
       localStorage.setItem('readlingo_heart_recovery_target', target.toString());
     }
 
@@ -102,12 +106,22 @@ export default function StoryReaderPage() {
       const remaining = Math.max(0, target - Date.now());
       setHeartCountdown(remaining);
       if (remaining <= 0) {
-        clearInterval(interval);
-        localStorage.removeItem('readlingo_heart_recovery_target');
-        userService.updateProfile({ hearts: 5 }).then(() => {
-          setQuizHearts(5);
-          window.dispatchEvent(new Event('profile-updated'));
-        }).catch(() => {});
+        setQuizHearts((prev) => {
+          const nextH = Math.min(MAX_HEARTS, prev + 1);
+          userService.updateProfile({ hearts: nextH }).then(() => {
+            window.dispatchEvent(new Event('profile-updated'));
+          }).catch(() => {});
+
+          if (nextH < MAX_HEARTS) {
+            const nextTarget = Date.now() + RECOVERY_MS;
+            localStorage.setItem('readlingo_heart_recovery_target', nextTarget.toString());
+            setHeartCountdown(RECOVERY_MS);
+          } else {
+            localStorage.removeItem('readlingo_heart_recovery_target');
+            setHeartCountdown(0);
+          }
+          return nextH;
+        });
       }
     }, 1000);
 
@@ -389,15 +403,19 @@ export default function StoryReaderPage() {
       showBubble(['Excellent!', 'Great Job!', 'Awesome!'][Math.floor(Math.random() * 3)]);
 
       // Every 3 correct answers = +1 heart
-      if (newStreak % 3 === 0 && quizHearts < MAX_HEARTS) {
-        const newHearts = quizHearts + 1;
-        setQuizHearts(newHearts);
-        setHeartGainedIdx(newHearts - 1);
-        setTimeout(() => setHeartGainedIdx(null), 700);
-        showBubble('+1 Heart!');
-        userService.updateProfile({ hearts: newHearts }).then(() => {
-          window.dispatchEvent(new Event('profile-updated'));
-        }).catch(() => {});
+      if (newStreak % 3 === 0) {
+        if (quizHearts < MAX_HEARTS) {
+          const newHearts = quizHearts + 1;
+          setQuizHearts(newHearts);
+          setHeartGainedIdx(newHearts - 1);
+          setTimeout(() => setHeartGainedIdx(null), 1000);
+          showBubble('+1 Can Qazandınız! ❤️ (3 düzgün)');
+          userService.updateProfile({ hearts: newHearts }).then(() => {
+            window.dispatchEvent(new Event('profile-updated'));
+          }).catch(() => {});
+        } else {
+          showBubble('3 Düzgün Cavab! 🔥');
+        }
       }
       setCorrectStreak(newStreak);
     } else {
@@ -747,7 +765,8 @@ export default function StoryReaderPage() {
       <div>
         {/* Hearts display */}
         <div className="mb-6">
-          <div className="flex items-center justify-center gap-1 mb-3">
+          <div className="flex items-center justify-center gap-2 mb-3">
+            <div className="flex items-center gap-1">
               {Array.from({ length: MAX_HEARTS }).map((_, i) => (
                 <motion.div key={i}
                   animate={heartLostIdx === i ? { scale: [1, 1.5, 0.8, 0], rotate: [0, -15, 15, 0], opacity: [1, 1, 1, 0] } : heartGainedIdx === i ? { scale: [0, 1.5, 1], opacity: [0, 1, 1] } : { scale: 1, opacity: 1 }}
@@ -757,6 +776,13 @@ export default function StoryReaderPage() {
                 </motion.div>
               ))}
             </div>
+            {isFreeUser && quizHearts > 0 && quizHearts < MAX_HEARTS && (
+              <span className="text-[11px] font-mono font-medium text-danger-500 bg-danger-50 dark:bg-danger-950/50 px-2 py-0.5 rounded-full border border-danger-200 dark:border-danger-900 flex items-center gap-1" title="Növbəti canın bərpasına qalan vaxt">
+                <Clock size={11} className="animate-pulse" />
+                <span>+1 ❤️ {formatCountdown(heartCountdown)}</span>
+              </span>
+            )}
+          </div>
             {/* Out of hearts message with live countdown */}
             {isFreeUser && quizHearts === 0 && (
               <div className="text-center mt-3">

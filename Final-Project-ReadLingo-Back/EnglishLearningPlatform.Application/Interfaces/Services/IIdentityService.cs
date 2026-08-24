@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +9,7 @@ namespace EnglishLearningPlatform.Application.Interfaces.Services
     public interface IIdentityService
     {
         Task<(bool Succeeded, IEnumerable<string> Errors, Guid UserId)> RegisterAsync(
-            string email, string password, string firstName, string lastName);
+            string email, string password, string firstName, string lastName, string? nativeLanguage = null, string? learningLevel = null, int? dailyGoalMinutes = null);
 
         Task<bool> CheckPasswordAsync(string email, string password);
 

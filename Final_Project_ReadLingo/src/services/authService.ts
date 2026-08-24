@@ -22,7 +22,14 @@ export const authService = {
     return res;
   },
 
-  register: async (name: string, email: string, password: string): Promise<any> => {
+  register: async (
+    name: string,
+    email: string,
+    password: string,
+    nativeLanguage?: string,
+    learningLevel?: string,
+    dailyGoalMinutes?: number
+  ): Promise<any> => {
     let cleanName = name.trim();
     if (cleanName.includes('@')) {
       cleanName = cleanName.split('@')[0];
@@ -37,6 +44,9 @@ export const authService = {
       email,
       password,
       confirmPassword: password,
+      nativeLanguage: nativeLanguage || 'Azerbaijani',
+      learningLevel: learningLevel || 'A1',
+      dailyGoalMinutes: dailyGoalMinutes || 15,
     });
     return res;
   },
@@ -67,6 +77,10 @@ export const authService = {
 
   confirmEmail: async (userId: string, token: string): Promise<any> => {
     return await apiPost('/auth/confirm-email', { userId, token });
+  },
+
+  resendConfirmationEmail: async (email: string): Promise<any> => {
+    return await apiPost('/auth/resend-confirmation-email', { email });
   },
 
   changePassword: async (currentPassword: string, newPassword: string): Promise<any> => {

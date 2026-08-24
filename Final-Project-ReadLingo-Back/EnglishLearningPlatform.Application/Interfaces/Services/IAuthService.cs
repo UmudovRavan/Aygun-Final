@@ -1,4 +1,4 @@
-﻿using EnglishLearningPlatform.Application.DTOs.Auth;
+using EnglishLearningPlatform.Application.DTOs.Auth;
 using EnglishLearningPlatform.Application.Responses;
 using System;
 using System.Collections.Generic;
@@ -18,6 +18,7 @@ namespace EnglishLearningPlatform.Application.Interfaces.Services
         Task<Result> ResetPasswordAsync(ResetPasswordDto dto, CancellationToken cancellationToken = default);
         Task<Result> ConfirmEmailAsync(ConfirmEmailDto dto, CancellationToken cancellationToken = default);
         Task<Result> SendEmailConfirmationAsync(Guid userId, CancellationToken cancellationToken = default);
+        Task<Result> SendEmailConfirmationByEmailAsync(string email, CancellationToken cancellationToken = default);
         Task<Result> ChangePasswordAsync(Guid userId, ChangePasswordDto dto, CancellationToken cancellationToken = default);
     }
 }

@@ -573,6 +573,37 @@
         }
       }
     },
+    "/api/v1/auth/resend-confirmation-email": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ForgotPasswordDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ForgotPasswordDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ForgotPasswordDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/v1/auth/change-password": {
       "post": {
         "tags": [
@@ -3547,6 +3578,19 @@
           "confirmPassword": {
             "type": "string",
             "nullable": true
+          },
+          "nativeLanguage": {
+            "type": "string",
+            "nullable": true
+          },
+          "learningLevel": {
+            "type": "string",
+            "nullable": true
+          },
+          "dailyGoalMinutes": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -3736,6 +3780,15 @@
           "plan": {
             "type": "string",
             "nullable": true
+          },
+          "dailyGoalMinutes": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "learningLevel": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -3887,7 +3940,8 @@
           1,
           2,
           3,
-          4
+          4,
+          5
         ],
         "type": "integer",
         "format": "int32"

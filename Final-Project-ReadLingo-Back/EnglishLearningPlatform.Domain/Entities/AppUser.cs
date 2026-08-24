@@ -29,6 +29,7 @@ namespace EnglishLearningPlatform.Domain.Entities
         public int LongestStreak { get; set; }
         public DateTime? LastStreakDate { get; set; }
         public string LearningLevel { get; set; } = "A1";
+        public int DailyGoalMinutes { get; set; } = 15;
         public bool IsAnonymousInLeaderboard { get; set; } = false;
 
         public ICollection<UserProgress> UserProgresses { get; set; } = new List<UserProgress>();

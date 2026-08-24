@@ -15,6 +15,7 @@ namespace EnglishLearningPlatform.API.Controllers.V1
         ChapterAudio,
         VocabularyImages,
         VocabularyAudio,
+        CategoryImages,
     }
 
     [ApiController]
@@ -37,6 +38,7 @@ namespace EnglishLearningPlatform.API.Controllers.V1
             UploadContainer.ChapterAudio => "chapter-audio",
             UploadContainer.VocabularyImages => "vocabulary-images",
             UploadContainer.VocabularyAudio => "vocabulary-audio",
+            UploadContainer.CategoryImages => "category-images",
             _ => "misc",
         };
 

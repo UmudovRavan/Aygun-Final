@@ -1,43 +1,44 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { ArrowRight, Clock, BookOpen, Star, ChevronLeft, ChevronRight, Sparkles, Users, TrendingUp, Globe, Check, Compass, Search, Atom, Scroll, Coffee, Plane, TreePine } from 'lucide-react';
+import { ArrowRight, Clock, BookOpen, Star, ChevronLeft, ChevronRight, Sparkles, Users, TrendingUp, Globe, Check, Compass, Search, Atom, Scroll, Coffee, Plane, TreePine, Briefcase, Ghost } from 'lucide-react';
 import { LandingNav, LandingFooter } from '../components/landing/LandingNav';
 import LingoMascot from '../components/ui/LingoMascot';
 import StoryCard from '../components/ui/StoryCard';
-import { mockStories, mockCategories } from '../data/mockData';
+import { mockStories } from '../data/mockData';
 import { storyService } from '../services';
+import { getMediaUrl } from '../services/api/client';
 import type { Story, Category } from '../types';
 import { useState, useEffect, useMemo } from 'react';
 
-const categoryIcons: Record<string, typeof BookOpen> = { Compass, Search, Sparkles, Atom, Scroll, Coffee, Plane, TreePine, BookOpen, Globe };
+const categoryIcons: Record<string, typeof BookOpen> = {
+  Compass, Search, Sparkles, Atom, Scroll, Coffee, Plane, TreePine, BookOpen, Globe, Briefcase, Ghost
+};
 
 const defaultCategoryGradients = [
-  'from-primary-500 to-primary-700',
-  'from-surface-700 to-surface-900',
-  'from-secondary-500 to-secondary-700',
-  'from-success-500 to-success-700',
-  'from-warning-500 to-warning-700',
-  'from-danger-500 to-danger-700',
-  'from-primary-400 to-secondary-500',
-  'from-success-400 to-success-600',
+  'from-primary-600 to-indigo-800',
+  'from-amber-600 to-rose-700',
+  'from-purple-600 to-indigo-900',
+  'from-zinc-800 via-slate-900 to-red-950',
+  'from-cyan-600 to-blue-700',
+  'from-emerald-600 to-teal-800',
+  'from-teal-600 to-cyan-800',
+  'from-amber-700 to-yellow-900',
 ];
 
-const defaultCategoryImages = [
-  'https://images.pexels.com/photos/12716176/pexels-photo-12716176.jpeg?auto=compress&cs=tinysrgb&w=400',
-  'https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?auto=compress&cs=tinysrgb&w=400',
-  'https://images.pexels.com/photos/1580288/pexels-photo-1580288.jpeg?auto=compress&cs=tinysrgb&w=400',
-  'https://images.pexels.com/photos/2280549/pexels-photo-2280549.jpeg?auto=compress&cs=tinysrgb&w=400',
-  'https://images.pexels.com/photos/2168974/pexels-photo-2168974.jpeg?auto=compress&cs=tinysrgb&w=400',
-  'https://images.pexels.com/photos/302899/pexels-photo-302899.jpeg?auto=compress&cs=tinysrgb&w=400',
-  'https://images.pexels.com/photos/2506923/pexels-photo-2506923.jpeg?auto=compress&cs=tinysrgb&w=400',
-  'https://images.pexels.com/photos/9988402/pexels-photo-9988402.jpeg?auto=compress&cs=tinysrgb&w=400',
-];
+const getCategoryMeta = (cat: Category, index: number) => {
+  const rawImage = cat.image || cat.iconUrl;
+  const image = rawImage ? getMediaUrl(rawImage) : '';
+  const icon = (cat.icon && categoryIcons[cat.icon]) || BookOpen;
+  const gradient = (cat.color && cat.color.includes('from-')) ? cat.color : defaultCategoryGradients[index % defaultCategoryGradients.length];
+  
+  return { image, icon, gradient };
+};
 
 export default function LandingPage() {
   const { t } = useTranslation();
   const [stories, setStories] = useState<Story[]>(mockStories);
-  const [categories, setCategories] = useState<Category[]>(mockCategories);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [current, setCurrent] = useState(0);
 
   useEffect(() => {
@@ -140,7 +141,7 @@ export default function LandingPage() {
                 {slide && (
                   <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-primary-600/10">
                     <Link to={`/story/${slide.id}`} className="block relative h-72 sm:h-80 lg:h-96 overflow-hidden group">
-                      <img src={slide.coverImage || defaultCategoryImages[0]} alt={slide.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                      <img src={slide.coverImage || ''} alt={slide.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                       <div className="absolute inset-0 bg-gradient-to-t from-ink-950/90 via-ink-950/30 to-transparent" />
                       <div className="absolute bottom-0 left-0 right-0 p-6 lg:p-8 text-white">
                         <div className="flex items-center gap-2 mb-3">
@@ -217,7 +218,7 @@ export default function LandingPage() {
           <div className="max-w-3xl mx-auto rounded-2xl overflow-hidden border border-surface-200 dark:border-surface-800 bg-white dark:bg-surface-900 shadow-card">
             <div className="grid sm:grid-cols-3">
               <div className="sm:col-span-1 h-48 sm:h-auto overflow-hidden">
-                <img src={previewStory.coverImage || defaultCategoryImages[0]} alt={previewStory.title} className="w-full h-full object-cover" />
+                <img src={previewStory.coverImage || ''} alt={previewStory.title} className="w-full h-full object-cover" />
               </div>
               <div className="sm:col-span-2 p-6">
                 <div className="flex items-center gap-2 mb-3">
@@ -250,19 +251,27 @@ export default function LandingPage() {
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
               {categories.map((cat, i) => {
-                const Icon = categoryIcons[cat.icon] || BookOpen;
-                const gradient = cat.color && cat.color.includes('from-') ? cat.color : defaultCategoryGradients[i % defaultCategoryGradients.length];
-                const imageSrc = cat.image || defaultCategoryImages[i % defaultCategoryImages.length];
+                const { image: imageSrc, icon: Icon, gradient } = getCategoryMeta(cat, i);
                 const calculatedCount = stories.filter((s) => s.category?.toLowerCase() === cat.name?.toLowerCase()).length;
                 const count = cat.storyCount || calculatedCount || 0;
 
                 return (
                   <motion.div key={cat.id || i} initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }}>
                     <Link to={`/library?category=${encodeURIComponent(cat.name)}`} className="group block rounded-2xl overflow-hidden bg-white dark:bg-surface-900 border border-surface-200 dark:border-surface-800 hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1">
-                      <div className="relative h-32 overflow-hidden">
-                        <img src={imageSrc} alt={cat.name} loading="lazy" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                        <div className={`absolute inset-0 bg-gradient-to-t ${gradient} opacity-60 group-hover:opacity-40 transition-opacity`} />
-                        <div className="absolute bottom-2 left-2 w-8 h-8 rounded-lg bg-white/90 dark:bg-surface-900/90 flex items-center justify-center"><Icon size={16} className="text-surface-700 dark:text-surface-200" /></div>
+                      <div className="relative h-32 overflow-hidden bg-surface-800">
+                        {imageSrc ? (
+                          <>
+                            <img src={imageSrc} alt={cat.name} loading="lazy" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                            <div className={`absolute inset-0 bg-gradient-to-t ${gradient} opacity-50 group-hover:opacity-30 transition-opacity`} />
+                          </>
+                        ) : (
+                          <div className={`w-full h-full bg-gradient-to-br ${gradient} flex items-center justify-center`}>
+                            <Icon size={36} className="text-white/40 group-hover:scale-110 transition-transform duration-300" />
+                          </div>
+                        )}
+                        <div className="absolute bottom-2 left-2 w-8 h-8 rounded-lg bg-white/90 dark:bg-surface-900/90 backdrop-blur flex items-center justify-center shadow-sm">
+                          <Icon size={16} className="text-surface-700 dark:text-surface-200" />
+                        </div>
                       </div>
                       <div className="p-3">
                         <h3 className="font-display font-bold text-sm text-surface-900 dark:text-white">{cat.name}</h3>

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,5 +13,8 @@ namespace EnglishLearningPlatform.Application.DTOs.Auth
         public string Email { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
         public string ConfirmPassword { get; set; } = string.Empty;
+        public string? NativeLanguage { get; set; } = "Azerbaijani";
+        public string? LearningLevel { get; set; } = "A1";
+        public int? DailyGoalMinutes { get; set; } = 15;
     }
 }

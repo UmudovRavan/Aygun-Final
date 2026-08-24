@@ -1,4 +1,4 @@
-﻿using EnglishLearningPlatform.API.Middlewares;
+using EnglishLearningPlatform.API.Middlewares;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
@@ -32,10 +32,10 @@ namespace EnglishLearningPlatform.API.Extensions
 
             app.UseCors("LingoCorsPolicy");
 
-            app.UseRateLimiter();
-
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseRateLimiter();
 
             app.UseStaticFiles(); 
 

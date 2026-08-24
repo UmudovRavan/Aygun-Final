@@ -1,4 +1,4 @@
-﻿using Asp.Versioning;
+using Asp.Versioning;
 using EnglishLearningPlatform.API.Extensions;
 using EnglishLearningPlatform.Application.DTOs.Auth;
 using EnglishLearningPlatform.Application.Interfaces.Services;
@@ -95,6 +95,16 @@ public class AuthController : ControllerBase
             return Unauthorized();
 
         var result = await _authService.SendEmailConfirmationAsync(userId.Value, cancellationToken);
+        return result.ToActionResult();
+    }
+
+    [HttpPost("resend-confirmation-email")]
+    [AllowAnonymous]
+    public async Task<IActionResult> ResendConfirmationEmail(
+        [FromBody] ForgotPasswordDto dto,
+        CancellationToken cancellationToken)
+    {
+        var result = await _authService.SendEmailConfirmationByEmailAsync(dto.Email, cancellationToken);
         return result.ToActionResult();
     }
 

@@ -45,6 +45,7 @@ export const userService = {
       plan: profile.plan || 'free',
       nativeLanguage: profile.nativeLanguage || 'Azerbaijani',
       dailyGoalMinutes: profile.dailyGoalMinutes || 15,
+      learningLevel: profile.learningLevel || 'A1',
       joinedAt: profile.createdAt || new Date().toISOString(),
       stats: {
         currentLevel: profile.currentLevel || 1,
@@ -76,6 +77,8 @@ export const userService = {
     if (data.avatar !== undefined) payload.profilePictureUrl = data.avatar;
     if (data.profilePictureUrl !== undefined) payload.profilePictureUrl = data.profilePictureUrl;
     if (data.nativeLanguage !== undefined) payload.nativeLanguage = data.nativeLanguage;
+    if (data.dailyGoalMinutes !== undefined) payload.dailyGoalMinutes = data.dailyGoalMinutes;
+    if (data.learningLevel !== undefined) payload.learningLevel = data.learningLevel;
     if (data.hearts !== undefined) payload.hearts = data.hearts;
     if (data.plan !== undefined) payload.plan = data.plan;
 
@@ -188,10 +191,12 @@ export const storyService = {
       return items.map((cat: any) => ({
         id: cat.id,
         name: cat.name,
+        description: cat.description || '',
         icon: cat.icon || 'BookOpen',
         color: cat.color || 'bg-primary-500',
         storyCount: cat.storyCount || 0,
-        image: cat.imageUrl || '',
+        image: cat.iconUrl || cat.imageUrl || cat.image || '',
+        iconUrl: cat.iconUrl || cat.imageUrl || cat.image || '',
       }));
     } catch {
       return [];
@@ -247,6 +252,26 @@ export const storyService = {
     }
   },
 
+  createCategory: async (data: any): Promise<any> => {
+    return await apiPost('/story-categories', {
+      name: data.name,
+      description: data.description || '',
+      iconUrl: data.iconUrl || data.image || '',
+    });
+  },
+
+  updateCategory: async (id: string, data: any): Promise<any> => {
+    return await apiPut(`/story-categories/${id}`, {
+      name: data.name,
+      description: data.description || '',
+      iconUrl: data.iconUrl || data.image || '',
+    });
+  },
+
+  deleteCategory: async (id: string): Promise<any> => {
+    return await apiDelete(`/story-categories/${id}`);
+  },
+
   createStory: async (data: any): Promise<any> => {
     return await apiPost('/stories', data);
   },
@@ -259,17 +284,6 @@ export const storyService = {
     return await apiDelete(`/stories/${id}`);
   },
 
-  createCategory: async (data: any): Promise<any> => {
-    return await apiPost('/story-categories', data);
-  },
-
-  updateCategory: async (id: string, data: any): Promise<any> => {
-    return await apiPut(`/story-categories/${id}`, data);
-  },
-
-  deleteCategory: async (id: string): Promise<any> => {
-    return await apiDelete(`/story-categories/${id}`);
-  },
 
   getLevels: async (): Promise<any[]> => {
     try {

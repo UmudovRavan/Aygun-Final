@@ -13,7 +13,9 @@ import LeaderboardPage from './pages/LeaderboardPage';
 import ProgressPage from './pages/ProgressPage';
 import ProfilePage from './pages/ProfilePage';
 import LoginPage from './pages/LoginPage';
-import SignupPage from './pages/SignupPage';
+import RegisterPage from './pages/RegisterPage';
+import VerifyEmailPage from './pages/VerifyEmailPage';
+import ConfirmEmailPage from './pages/ConfirmEmailPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import OnboardingPage from './pages/OnboardingPage';
 import BlogPage from './pages/BlogPage';
@@ -48,7 +50,10 @@ export default function App() {
           <Route path="/progress" element={<ProgressPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/signup" element={<RegisterPage />} />
+          <Route path="/verify-email" element={<VerifyEmailPage />} />
+          <Route path="/confirm-email" element={<ConfirmEmailPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/onboarding" element={<OnboardingPage />} />
           <Route path="/blog" element={<BlogPage />} />
