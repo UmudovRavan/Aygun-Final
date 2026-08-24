@@ -97,7 +97,11 @@ export default function AppLayout({ children }: Props) {
   useEffect(() => {
     if (!userProfile || userProfile.plan !== 'free' || userProfile.hearts >= 5) return;
 
-    const RECOVERY_MS = 15 * 60 * 1000;
+    const RECOVERY_MS = 30 * 60 * 1000;
+    const currentTarget = Number(localStorage.getItem('readlingo_heart_recovery_target'));
+    if (currentTarget > Date.now() + RECOVERY_MS) {
+      localStorage.setItem('readlingo_heart_recovery_target', (Date.now() + RECOVERY_MS).toString());
+    }
     const interval = setInterval(() => {
       const target = Number(localStorage.getItem('readlingo_heart_recovery_target'));
       if (target && Date.now() >= target) {

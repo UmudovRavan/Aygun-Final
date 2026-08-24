@@ -42,6 +42,7 @@ namespace EnglishLearningPlatform.Persistence.Seed
                 await SeedAdminUserAsync(scope.ServiceProvider);
                 await SeedStoryLevelsAsync(context);
                 await SeedStoryCategoriesAsync(context);
+                await StorySeedData.SeedStoriesAndChaptersAsync(context, logger);
 
                 logger.LogInformation("Database seeding completed successfully.");
             }
@@ -124,16 +125,33 @@ namespace EnglishLearningPlatform.Persistence.Seed
 
         private static async Task SeedStoryCategoriesAsync(ApplicationDbContext context)
         {
-            if (await context.StoryCategories.AnyAsync())
-                return;
-
-            context.StoryCategories.AddRange(
+            var defaultCategories = new List<StoryCategory>
+            {
+                new StoryCategory { Name = "Adventure", Description = "Exciting journeys, wilderness expeditions, and treasure hunts.", IconUrl = "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=600&q=80" },
                 new StoryCategory { Name = "Business", Description = "Workplace and professional communication.", IconUrl = "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=600&q=80" },
                 new StoryCategory { Name = "Daily Life", Description = "Everyday situations and routines.", IconUrl = "https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=600&q=80" },
-                new StoryCategory { Name = "Fiction", Description = "Short stories and folk tales.", IconUrl = "https://images.unsplash.com/photo-1532012164546-f432f2e3777f?auto=format&fit=crop&w=600&q=80" },
+                new StoryCategory { Name = "Fiction", Description = "Short stories, fantasy, and folk tales.", IconUrl = "https://images.unsplash.com/photo-1532012164546-f432f2e3777f?auto=format&fit=crop&w=600&q=80" },
                 new StoryCategory { Name = "Horror", Description = "Spooky mysteries and dark thrillers.", IconUrl = "https://images.unsplash.com/photo-1509248961158-e54f6934749c?auto=format&fit=crop&w=600&q=80" },
-                new StoryCategory { Name = "Travel", Description = "Airports, hotels, and getting around.", IconUrl = "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=600&q=80" },
-                new StoryCategory { Name = "Culture", Description = "Traditions, history, and customs.", IconUrl = "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&w=600&q=80" });
+                new StoryCategory { Name = "Travel", Description = "Airports, hotels, and getting around the globe.", IconUrl = "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=600&q=80" },
+                new StoryCategory { Name = "Culture", Description = "Traditions, history, and customs around the world.", IconUrl = "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&w=600&q=80" },
+                new StoryCategory { Name = "Science", Description = "Discoveries, technology, outer space, and nature.", IconUrl = "https://images.unsplash.com/photo-1507413245164-6160d8298b31?auto=format&fit=crop&w=600&q=80" },
+                new StoryCategory { Name = "History", Description = "Ancient civilisations, heroic events, and pivotal eras.", IconUrl = "https://images.unsplash.com/photo-1461360370896-922624d12aa1?auto=format&fit=crop&w=600&q=80" }
+            };
+
+            foreach (var cat in defaultCategories)
+            {
+                var existing = await context.StoryCategories.FirstOrDefaultAsync(c => c.Name.ToLower() == cat.Name.ToLower());
+                if (existing == null)
+                {
+                    context.StoryCategories.Add(cat);
+                }
+                else if (string.IsNullOrEmpty(existing.IconUrl) || existing.IconUrl != cat.IconUrl)
+                {
+                    existing.IconUrl = cat.IconUrl;
+                    existing.Description = cat.Description;
+                    context.StoryCategories.Update(existing);
+                }
+            }
 
             await context.SaveChangesAsync();
         }

@@ -66,18 +66,30 @@ namespace EnglishLearningPlatform.Application.Services
             if (user is null)
                 return Result<ProfileDto>.Failure("Profile not found.");
 
-            var existingProfilePicture = user.ProfilePictureUrl;
+            if (!string.IsNullOrWhiteSpace(dto.FirstName))
+                user.FirstName = dto.FirstName.Trim();
 
-            _mapper.Map(dto, user);
+            if (!string.IsNullOrWhiteSpace(dto.LastName))
+                user.LastName = dto.LastName.Trim();
 
-            if (dto.ProfilePictureUrl == null)
-            {
-                user.ProfilePictureUrl = existingProfilePicture;
-            }
+            if (!string.IsNullOrWhiteSpace(dto.ProfilePictureUrl))
+                user.ProfilePictureUrl = dto.ProfilePictureUrl;
+
+            if (dto.PhoneNumber != null)
+                user.PhoneNumber = dto.PhoneNumber;
+
+            if (dto.DateOfBirth.HasValue)
+                user.DateOfBirth = dto.DateOfBirth.Value;
+
+            if (!string.IsNullOrWhiteSpace(dto.NativeLanguage))
+                user.NativeLanguage = dto.NativeLanguage.Trim();
+
+            if (!string.IsNullOrWhiteSpace(dto.LearningLanguage))
+                user.LearningLanguage = dto.LearningLanguage.Trim();
 
             if (dto.Hearts.HasValue)
             {
-                user.Hearts = dto.Hearts.Value;
+                user.Hearts = Math.Max(0, dto.Hearts.Value);
             }
 
             if (dto.IsAnonymousInLeaderboard.HasValue)

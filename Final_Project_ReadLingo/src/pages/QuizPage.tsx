@@ -25,7 +25,10 @@ function formatCountdown(ms: number) {
   const hours = Math.floor(totalSecs / 3600);
   const mins = Math.floor((totalSecs % 3600) / 60);
   const secs = totalSecs % 60;
-  return `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+  if (hours > 0) {
+    return `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+  }
+  return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
 }
 
 export default function QuizPage() {
@@ -58,9 +61,9 @@ export default function QuizPage() {
       return;
     }
 
-    const RECOVERY_MS = 15 * 60 * 1000; // 15 minutes per heart
+    const RECOVERY_MS = 30 * 60 * 1000; // 30 minutes per heart
     let target = Number(localStorage.getItem('readlingo_heart_recovery_target'));
-    if (!target || isNaN(target) || target <= Date.now()) {
+    if (!target || isNaN(target) || target <= Date.now() || target > Date.now() + RECOVERY_MS) {
       target = Date.now() + RECOVERY_MS;
       localStorage.setItem('readlingo_heart_recovery_target', target.toString());
     }
@@ -68,7 +71,8 @@ export default function QuizPage() {
     setHeartCountdown(Math.max(0, target - Date.now()));
 
     const interval = setInterval(() => {
-      const remaining = Math.max(0, target - Date.now());
+      const currentTarget = Number(localStorage.getItem('readlingo_heart_recovery_target')) || target;
+      const remaining = Math.max(0, currentTarget - Date.now());
       setHeartCountdown(remaining);
       if (remaining <= 0) {
         setHearts((prev) => {
@@ -118,20 +122,29 @@ export default function QuizPage() {
       setIsCorrect(false);
       setShowFeedback(true);
       if (isFreeUser) {
-        const newHearts = Math.max(0, hearts - 1);
-        setHearts(newHearts);
-        setHeartLostIndex(hearts - 1);
-        setTimeout(() => setHeartLostIndex(null), 700);
-        userService.updateProfile({ hearts: newHearts }).then(() => {
-          window.dispatchEvent(new Event('profile-updated'));
-        }).catch(() => {});
+        setHearts((prevHearts) => {
+          const newHearts = Math.max(0, prevHearts - 1);
+          setHeartLostIndex(newHearts);
+          setTimeout(() => setHeartLostIndex(null), 700);
+          userService.updateProfile({ hearts: newHearts }).then(() => {
+            window.dispatchEvent(new Event('profile-updated'));
+          }).catch(() => {});
+          const RECOVERY_MS = 30 * 60 * 1000;
+          let currentTarget = Number(localStorage.getItem('readlingo_heart_recovery_target'));
+          if (!currentTarget || isNaN(currentTarget) || currentTarget <= Date.now() || currentTarget > Date.now() + RECOVERY_MS) {
+            const target = Date.now() + RECOVERY_MS;
+            localStorage.setItem('readlingo_heart_recovery_target', target.toString());
+            setHeartCountdown(RECOVERY_MS);
+          }
+          return newHearts;
+        });
       }
       setIncorrectCount((c) => c + 1);
       setLingoMood('sad');
       setCorrectStreak(0);
       showBubble("Time's up!");
     }
-  }, [timeLeft, showFeedback, result, hearts, isFreeUser]);
+  }, [timeLeft, showFeedback, result, isFreeUser]);
 
   useEffect(() => {
     const load = async () => {
@@ -216,6 +229,13 @@ export default function QuizPage() {
           userService.updateProfile({ hearts: newHearts }).then(() => {
             window.dispatchEvent(new Event('profile-updated'));
           }).catch(() => {});
+          const RECOVERY_MS = 30 * 60 * 1000;
+          let currentTarget = Number(localStorage.getItem('readlingo_heart_recovery_target'));
+          if (!currentTarget || isNaN(currentTarget) || currentTarget <= Date.now() || currentTarget > Date.now() + RECOVERY_MS) {
+            const target = Date.now() + RECOVERY_MS;
+            localStorage.setItem('readlingo_heart_recovery_target', target.toString());
+            setHeartCountdown(RECOVERY_MS);
+          }
           return newHearts;
         });
       }
@@ -364,7 +384,7 @@ export default function QuizPage() {
                 {formatCountdown(heartCountdown)}
               </div>
               <span className="text-[11px] text-surface-400 mt-1.5">
-                ⏰ Hər 4 saatdan bir canlar avtomatik bərpa olunur
+                ⏰ Hər 30 dəqiqədən bir can avtomatik bərpa olunur
               </span>
             </div>
 

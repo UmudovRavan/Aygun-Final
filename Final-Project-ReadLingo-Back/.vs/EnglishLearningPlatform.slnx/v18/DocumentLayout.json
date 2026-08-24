@@ -3,8 +3,8 @@
   "WorkspaceRootPath": "C:\\Users\\Ravan999\\Desktop\\Aygun-Final\\Final-Project-ReadLingo-Back\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Ravan999\\Desktop\\Aygun-Final\\Final-Project-ReadLingo-Back\\EnglishLearningPlatform.Persistence\\Migrations\\20260824115510_initt.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:EnglishLearningPlatform.Persistence\\Migrations\\20260824115510_initt.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{1B4B21D0-3879-20BA-512F-D0006CAE90F3}|EnglishLearningPlatform.Persistence\\EnglishLearningPlatform.Persistence.csproj|c:\\users\\ravan999\\desktop\\aygun-final\\final-project-readlingo-back\\englishlearningplatform.persistence\\migrations\\20260824115510_initt.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1B4B21D0-3879-20BA-512F-D0006CAE90F3}|EnglishLearningPlatform.Persistence\\EnglishLearningPlatform.Persistence.csproj|solutionrelative:englishlearningplatform.persistence\\migrations\\20260824115510_initt.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -24,7 +24,7 @@
               "RelativeDocumentMoniker": "EnglishLearningPlatform.Persistence\\Migrations\\20260824115510_initt.cs",
               "ToolTip": "C:\\Users\\Ravan999\\Desktop\\Aygun-Final\\Final-Project-ReadLingo-Back\\EnglishLearningPlatform.Persistence\\Migrations\\20260824115510_initt.cs",
               "RelativeToolTip": "EnglishLearningPlatform.Persistence\\Migrations\\20260824115510_initt.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAVAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAB4AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-08-24T11:55:10.725Z",
               "EditorCaption": ""
